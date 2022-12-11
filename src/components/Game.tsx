@@ -34,6 +34,10 @@ function Game() {
     setGuessCount(guesses)
   }
 
+  function resetGameTimer() {
+    setGameTime(0)
+  }
+
   function completeGame() {
     const updatedGameHistory = [...gameHistory];
     const gameStats: GameStats = {guessCount: guessCount, word: wordToGuess, time: gameTime}
@@ -43,6 +47,7 @@ function Game() {
     existingGameData.push(gameStats)
     localStorage.setItem("gameStats", JSON.stringify(existingGameData));
     resetGuessCount();
+    resetGameTimer()
     setGameInProgress(false)
   }
 
