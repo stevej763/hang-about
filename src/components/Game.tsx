@@ -58,6 +58,8 @@ function Game() {
   async function startGame() {
     const newWord = await randomWord();
     const guessArray = createEmptyArrayForWord(newWord);
+    resetGameTimer()
+    resetGuessCount()
     setWordToGuess(newWord)
     setWordLengthAsArray(guessArray)
     setGameInProgress(true)
