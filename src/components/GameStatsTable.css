@@ -1,0 +1,20 @@
+.StatsTable {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.StatsTable thead {
+    background: forestgreen;
+}
+
+.StatsTable tbody {
+    background: #808080;
+}
+
+.StatsTable th {
+    padding: 1rem;
+}
+
+.StatsTable td {
+    padding: 0.5rem;
+}

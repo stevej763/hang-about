@@ -1,0 +1,19 @@
+.App {
+  background-color: #282c34;
+  min-height: 100vh;
+  flex-direction: column;
+  color: white;
+}
+
+.PageTitle {
+  padding: 40px 0;
+  font-size: 50px;
+  text-align: center;
+  margin: 0 0 100px;
+}
+
+@media only screen and (max-width: 600px) {
+  .PageTitle {
+    margin: 0 0 50px;
+  }
+}

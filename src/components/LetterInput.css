@@ -1,0 +1,32 @@
+.LetterInput {
+    color: #808080;
+    text-align: center;
+    margin: 10px;
+    font-size: 3rem;
+    font-family: source-code-pro, monospace;
+    border: transparent;
+    border-bottom: white 2px dashed;
+    border-top: 5px transparent dashed;
+    border-radius: 0;
+    background: transparent;
+    caret-color: transparent;
+}
+
+@media only screen and (max-width: 600px) {
+    .LetterInput {
+        font-size: 1rem;
+    }
+}
+
+input:focus {
+    outline: none;
+    border-bottom: white 2px solid;
+}
+
+.letter-input-correct {
+    border-top: solid greenyellow 5px;
+}
+
+.letter-input-incorrect {
+    border-top: solid red 5px;
+}
