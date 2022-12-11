@@ -3,6 +3,11 @@
     flex-direction: column;
 }
 
+.WorkInProgress {
+    padding-top: 50px;
+    text-align: center;
+}
+
 .PlayButton {
     padding: 10px;
     background: linear-gradient(90deg,cadetblue, cornflowerblue);

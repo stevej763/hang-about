@@ -20,7 +20,7 @@ function GameStatsTable({gameStats}: GameStatsTableProps) {
 
   function getTable() {
     if (gameStats.length === 0) {
-      return <p>Play a game to see your stats here</p>
+      return <p className={"NoGamesPlayed"}>Play a game to see your stats here</p>
     }
     return (
         <table className={"StatsTable"}>

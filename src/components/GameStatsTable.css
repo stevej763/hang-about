@@ -18,3 +18,8 @@
 .StatsTable td {
     padding: 0.5rem;
 }
+
+.NoGamesPlayed {
+    padding-top: 10px;
+    text-align: center;
+}
