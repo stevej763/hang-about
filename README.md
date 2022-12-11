@@ -8,3 +8,20 @@ The app is also dockerised in a production-like environment, to run this:
 Build the image: `docker build -t <image-name> .`
 
 Run the image: `docker run -p 80:80 <image-name>`
+
+
+## Known bugs
+
+final correct letter guess does not increment counter
+
+backspace should not move the carrot position to previous letter, just delete current letter - Do I even want the backspace to be a feature (count is already added so there is no advantage to deleting the character)
+
+## Idea for word completion modal
+
+(this will also fix the guess counter not updating I think)
+
+- Show stats for that round
+- quickest letter to guess
+- longest letter to guess
+- time taken to guess whole word
+- most guessed letter (the key that way pressed the most)

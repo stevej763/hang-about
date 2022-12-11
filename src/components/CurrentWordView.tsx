@@ -12,8 +12,10 @@ interface CurrentWordViewProps {
 
 function CurrentWordView({startingGuessArray, currentWord, updateGuessCount, complete}: CurrentWordViewProps) {
 
+  const emptyLetterHistory: string[] = []
   const [keyDown, setKeyDown] = useState(false)
   const [currentLettersOnPage, setCurrentLettersOnPage] = useState(startingGuessArray)
+  const [letterHistory, setLetterHistory] = useState(emptyLetterHistory)
 
   function getInputBoxes() {
     return (
@@ -52,6 +54,12 @@ function CurrentWordView({startingGuessArray, currentWord, updateGuessCount, com
     }
   }
 
+  function updateLetterHistory(userInputKey: string) {
+    const updatedLetters = [...letterHistory];
+    updatedLetters.push(userInputKey);
+    setLetterHistory(updatedLetters)
+  }
+
   function handleUserInput(event: KeyboardEvent<HTMLInputElement>, inputIndex: number) {
     event.preventDefault();
     let userInputKey = event.key;
@@ -61,6 +69,7 @@ function CurrentWordView({startingGuessArray, currentWord, updateGuessCount, com
       setKeyDown(true)
       let updatedLetters = [...currentLettersOnPage]
       if (isValidInput(userInputKey)) {
+        updateLetterHistory(userInputKey)
         updateGuessCount()
         handleLetterAddition(updatedLetters, userInputKey, inputElement);
       } else if (isBackspace(userInputKey)) {

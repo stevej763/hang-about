@@ -13,6 +13,7 @@ function GameStatsTable({gameStats}: GameStatsTableProps) {
       <td>{gameNumber}</td>
       <td>{game.word}</td>
       <td>{game.guessCount}</td>
+      <td>{game.time}</td>
     </tr>
 
   }
@@ -28,6 +29,7 @@ function GameStatsTable({gameStats}: GameStatsTableProps) {
             <th>Game Number</th>
             <th>Word</th>
             <th>Guesses</th>
+            <th>Time (seconds)</th>
           </tr>
           </thead>
           <tbody>

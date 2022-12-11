@@ -1,6 +1,6 @@
 .StatsTable {
     text-align: center;
-    margin-top: 20px;
+    margin: 20px 0;
 }
 
 .StatsTable thead {
@@ -12,7 +12,7 @@
 }
 
 .StatsTable th {
-    padding: 1rem;
+    padding: 1rem 0.6rem;
 }
 
 .StatsTable td {

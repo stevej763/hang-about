@@ -1,76 +1,84 @@
 import GuessCounter from "./GuessCounter";
 import CurrentWordView from "./CurrentWordView";
-import React, {useState} from "react";
-import {createGuessArrayForWord, randomWord} from "../utils/wordGeneratorUtil";
+import React, {useEffect, useState} from "react";
+import {createEmptyArrayForWord, randomWord} from "../utils/wordGeneratorUtil";
 import LandingPage from "./LandingPage";
 import "./Game.css"
 import {GameStats} from "./types";
-
+import GameTimer from "./GameTimer";
 
 function Game() {
   function getLocalGameHistoryData() {
-    let parsedStorageData: GameStats[] = JSON.parse(localStorage.getItem("gameStats") || "[]") || [];
+    const statsDataString = localStorage.getItem("gameStats") || "[]";
+    const parsedStorageData: GameStats[] = JSON.parse(statsDataString) || [];
     return parsedStorageData;
   }
 
   const [gameHistory, setGameHistory] = useState(getLocalGameHistoryData())
-  const [showLandingPage, setShowLandingPage] = useState(true)
+  const [gameInProgress, setGameInProgress] = useState(false)
   const [guessCount, setGuessCount] = useState(0)
+  const [gameTime, setGameTime] = useState(0)
   const [wordToGuess, setWordToGuess] = useState("randomWord")
   const [wordLengthAsArray, setWordLengthAsArray] = useState([""])
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setGameTime(gameTime + 1);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [gameTime]);
+
   function updateGuessCount() {
-    let guesses = guessCount + 1;
+    const guesses = guessCount + 1;
     setGuessCount(guesses)
   }
 
   function completeGame() {
     const updatedGameHistory = [...gameHistory];
-    const gameStats: GameStats = {guessCount: guessCount, word: wordToGuess}
+    const gameStats: GameStats = {guessCount: guessCount, word: wordToGuess, time: gameTime}
     updatedGameHistory.push(gameStats)
     setGameHistory(updatedGameHistory);
-    let existingGameData: GameStats[] = getLocalGameHistoryData()
+    const existingGameData: GameStats[] = getLocalGameHistoryData()
     existingGameData.push(gameStats)
     localStorage.setItem("gameStats", JSON.stringify(existingGameData));
-
     resetGuessCount();
-    setShowLandingPage(true)
+    setGameInProgress(false)
   }
 
   function resetGuessCount() {
     setGuessCount(0)
   }
 
-  function startGame() {
-    let newWord = randomWord();
-    const guessArray = createGuessArrayForWord(newWord);
+  async function startGame() {
+    const newWord = await randomWord();
+    const guessArray = createEmptyArrayForWord(newWord);
     setWordToGuess(newWord)
     setWordLengthAsArray(guessArray)
-    setShowLandingPage(false)
-
+    setGameInProgress(true)
   }
 
   function mainView() {
-    if (showLandingPage) {
-      return (
-          <div className="Game">
-            <LandingPage startGameAction={startGame} gameStats={gameHistory}/>
-          </div>
-      )
+    if (!gameInProgress) {
+      return <LandingPage startGameAction={startGame} gameStats={gameHistory}/>
     } else {
       return (
-          <div className="Game">
-            <CurrentWordView startingGuessArray={wordLengthAsArray}
-                             updateGuessCount={updateGuessCount}
-                             currentWord={wordToGuess}
-                             complete={completeGame}/>
-            <GuessCounter guesses={guessCount}/>
+          <div className="Play">
+            <CurrentWordView
+                startingGuessArray={wordLengthAsArray}
+                updateGuessCount={updateGuessCount}
+                currentWord={wordToGuess}
+                complete={completeGame}/>
+            <div className={"Counters"}>
+              <GuessCounter guesses={guessCount}/>
+              <GameTimer gameTime={gameTime}/>
+            </div>
           </div>
       )
     }
   }
 
-  return mainView();
+  return <div className="Game">{mainView()}</div>
 }
 
 export default Game;

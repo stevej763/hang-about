@@ -1,32 +1,43 @@
 .LetterInput {
-    color: #808080;
+    color: #6b6b6b;
     text-align: center;
-    margin: 10px;
-    font-size: 3rem;
+    margin: 0 10px;
+    font-size: 5rem;
     font-family: source-code-pro, monospace;
     border: transparent;
-    border-bottom: white 2px dashed;
+    border-bottom: #eed708 5px solid;
     border-top: 5px transparent dashed;
-    border-radius: 0;
     background: transparent;
     caret-color: transparent;
+    padding: 0 0.5rem;
+
+    border-radius: 3px;
 }
 
 @media only screen and (max-width: 600px) {
     .LetterInput {
-        font-size: 1rem;
+        font-size: 2rem;
+        margin: 0 5px;
     }
 }
 
 input:focus {
+    background: #464657;
     outline: none;
-    border-bottom: white 2px solid;
+    border-bottom: white 5px solid;
 }
 
 .letter-input-correct {
-    border-top: solid greenyellow 5px;
+    color: #414141;
+    background: #78c708;
+    border-top: solid #78c708 5px;
+    border-bottom: #c1f38c 5px solid;
+
 }
 
 .letter-input-incorrect {
-    border-top: solid red 5px;
+    background: #bd4141;
+    border-top: solid #bd4141 5px;
+    border-bottom: #e87930 5px solid;
+
 }
