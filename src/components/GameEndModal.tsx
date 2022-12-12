@@ -29,21 +29,32 @@ function GameEndModal({isVisible, completeGame, gameStats}: GameEndModalProps) {
     if (isVisible) {
       return <section className={"Modal"}>
         <div className={"EndGameStats"}>
-          <h2>TODAY'S WORD: {gameStats.word}</h2>
-          <p className={"GuessCount"}>GUESS COUNT: {gameStats.guessCount}</p>
-          <p className={"TimeTaken"}>TIME TAKEN: {gameStats.time}</p>
-          <table>
-            <thead>
+          <h3>GAME SUMMARY FOR TODAY'S WORD:</h3>
+          <h1>{gameStats.word}</h1>
+          <div className={"DataSummary"}>
+            <div className={"GuessCount"}>
+              <span>Letters guessed:</span>
+              <span>{gameStats.guessCount}</span>
+            </div>
+            <div className={"TimeTaken"}>
+              <span>Time taken(s): </span>
+              <span>{gameStats.time}</span>
+            </div>
+          </div>
+          <div className={"AlphabetStats"}>
+            <table className={"AlphabetTable"}>
+              <thead>
               <tr>
                 {printLetterHeadings()}
               </tr>
-            </thead>
-            <tbody>
-            <tr>
-              {printLetterCounts()}
-            </tr>
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+              <tr>
+                {printLetterCounts()}
+              </tr>
+              </tbody>
+            </table>
+          </div>
           <button onClick={completeGame} className="EndGameButton">Done</button>
         </div>
       </section>

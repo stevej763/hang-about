@@ -7,17 +7,45 @@
     text-align: center;
 }
 
-.TimeTaken {
+.DataSummary {
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+    padding-bottom: 1rem;
+}
 
+.TimeTaken {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 3px;
 }
 
 .GuessCount {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 3px;
+}
 
+.AlphabetStats {
+    display: flex;
+    justify-content: center;
+
+}
+
+.AlphabetTable th:nth-child(2n+1), td:nth-child(2n+1) {
+    background: #808080;
+}
+
+.AlphabetTable th:nth-child(2n), td:nth-child(2n) {
+    background: #464657;
 }
 
 .EndGameButton {
     padding: 10px;
-    background: linear-gradient(90deg,cadetblue, cornflowerblue);
+    background: linear-gradient(90deg, cadetblue, cornflowerblue);
     border: solid #78c708 3px;
     border-radius: 5px;
     transition: 1s;
