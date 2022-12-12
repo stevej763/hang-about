@@ -1,21 +1,26 @@
 import React, {KeyboardEvent, useState} from "react";
 import LetterInput from "./LetterInput";
-import {isBackspace, isValidInput} from "../utils/userInputUtil";
+import {isValidInput} from "../utils/userInputUtil";
 import "./CurrentWordView.css"
+import GameEndModal from "./GameEndModal";
+import ModalPageOverlay from "./ModalPageOverlay";
 
 interface CurrentWordViewProps {
   startingGuessArray: string[]
   currentWord: string
   updateGuessCount: () => void
-  complete: () => void
+  currentGuessCount: number
+  complete: (allLetters: string[]) => void
+  stopGameTimer: () => void
 }
 
-function CurrentWordView({startingGuessArray, currentWord, updateGuessCount, complete}: CurrentWordViewProps) {
+function CurrentWordView({startingGuessArray, currentWord, currentGuessCount, updateGuessCount, complete, stopGameTimer}: CurrentWordViewProps) {
 
-  const emptyLetterHistory: string[] = []
-  const [keyDown, setKeyDown] = useState(false)
-  const [currentLettersOnPage, setCurrentLettersOnPage] = useState(startingGuessArray)
-  const [letterHistory, setLetterHistory] = useState(emptyLetterHistory)
+  const emptyLetterHistory: string[] = [];
+  const [keyDown, setKeyDown] = useState(false);
+  const [currentLettersOnPage, setCurrentLettersOnPage] = useState(startingGuessArray);
+  const [letterHistory, setLetterHistory] = useState(emptyLetterHistory);
+  const [gameOver, setGameOver] = useState(false);
 
   function getInputBoxes() {
     return (
@@ -38,11 +43,11 @@ function CurrentWordView({startingGuessArray, currentWord, updateGuessCount, com
     return userLetter.toUpperCase() === letterIndexInWord.toUpperCase();
   }
 
-  function handleArrowKeyInput(event: KeyboardEvent<HTMLInputElement>, inputIndex: number) {
-    if (event.key === "ArrowRight") {
+  function handleArrowKeyInput(userInputKey: string, inputIndex: number) {
+    if (userInputKey === "ArrowRight") {
       toNextCharacter(inputIndex)
     }
-    if (event.key === "ArrowLeft") {
+    if (userInputKey === "ArrowLeft") {
       toPreviousCharacter(inputIndex)
     }
   }
@@ -50,8 +55,13 @@ function CurrentWordView({startingGuessArray, currentWord, updateGuessCount, com
   function updateGuessProgress(updatedLetters: string[]) {
     setCurrentLettersOnPage(updatedLetters);
     if (updatedLetters.join("") === currentWord) {
-      complete()
+      showEndGameModal()
     }
+  }
+
+  function showEndGameModal() {
+    setGameOver(true)
+    stopGameTimer()
   }
 
   function updateLetterHistory(userInputKey: string) {
@@ -62,9 +72,9 @@ function CurrentWordView({startingGuessArray, currentWord, updateGuessCount, com
 
   function handleUserInput(event: KeyboardEvent<HTMLInputElement>, inputIndex: number) {
     event.preventDefault();
-    let userInputKey = event.key;
+    let userInputKey = event.key.toUpperCase();
     const inputElement = event.currentTarget;
-    handleArrowKeyInput(event, inputIndex);
+    handleArrowKeyInput(userInputKey, inputIndex);
     if (!keyDown) {
       setKeyDown(true)
       let updatedLetters = [...currentLettersOnPage]
@@ -72,15 +82,7 @@ function CurrentWordView({startingGuessArray, currentWord, updateGuessCount, com
         updateLetterHistory(userInputKey)
         updateGuessCount()
         handleLetterAddition(updatedLetters, userInputKey, inputElement);
-      } else if (isBackspace(userInputKey)) {
-        handleLetterDeletion(updatedLetters);
       }
-    }
-
-    function handleLetterDeletion(updatedLetters: string[]) {
-      inputElement.classList.remove("letter-input-correct", "letter-input-incorrect")
-      updatedLetters[inputIndex] = "";
-      updateGuessProgress(updatedLetters);
     }
 
     function handleLetterAddition(currentLetters: string[], userInputLetter: string, currentTarget: HTMLInputElement) {
@@ -105,8 +107,6 @@ function CurrentWordView({startingGuessArray, currentWord, updateGuessCount, com
       const userInputLetter: string = event.key;
       if (isValidInput(userInputLetter) && userGuessWasCorrect(userInputLetter, currentWord.charAt(inputIndex))) {
         toNextCharacter(inputIndex);
-      } else if (isBackspace(userInputLetter)) {
-        toPreviousCharacter(inputIndex);
       }
       setKeyDown(false)
     }
@@ -114,17 +114,19 @@ function CurrentWordView({startingGuessArray, currentWord, updateGuessCount, com
   }
 
   function toNextCharacter(inputIndex: number) {
-    let nextIndex = inputIndex + 1;
-    let nextInput = document.getElementById("letterInput-" + nextIndex);
-    if (nextIndex === startingGuessArray.length) {
-      nextIndex = 0
-      nextInput = document.getElementById("letterInput-" + nextIndex);
-    }
-    let isAlreadyCompleted = nextInput?.classList.contains("letter-input-correct");
-    if (!isAlreadyCompleted) {
-      nextInput?.focus()
-    } else {
-      toNextCharacter(nextIndex)
+    if (!gameOver) {
+      let nextIndex = inputIndex + 1;
+      let nextInput = document.getElementById("letterInput-" + nextIndex);
+      if (nextIndex === startingGuessArray.length) {
+        nextIndex = 0
+        nextInput = document.getElementById("letterInput-" + nextIndex);
+      }
+      let isAlreadyCompleted = nextInput?.classList.contains("letter-input-correct");
+      if (!isAlreadyCompleted) {
+        nextInput?.focus()
+      } else {
+        toNextCharacter(nextIndex)
+      }
     }
   }
 
@@ -143,7 +145,13 @@ function CurrentWordView({startingGuessArray, currentWord, updateGuessCount, com
     }
   }
 
+
+
   return <div className={"CurrentGameLetters"}>
+    <GameEndModal isVisible={gameOver}
+                  completeGame={() => complete(letterHistory)}
+                  gameStats={ {letterHistory: letterHistory, guessCount: currentGuessCount, word: currentWord, time: 5} }/>
+    <ModalPageOverlay isVisible={gameOver}/>
     {getInputBoxes()}
   </div>
 }

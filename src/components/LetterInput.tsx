@@ -11,6 +11,7 @@ interface LetterInputProps {
 
 function LetterInput({autoFocus, index, checkInput, changeFocus, currentCharacter}: LetterInputProps) {
   return <input
+      tabIndex={0}
       autoCorrect={"false"}
       size={1}
       autoFocus={autoFocus}

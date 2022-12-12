@@ -15,32 +15,41 @@ function Game() {
   }
 
   const [gameHistory, setGameHistory] = useState(getLocalGameHistoryData())
-  const [gameInProgress, setGameInProgress] = useState(false)
+  const [inGame, setInGame] = useState(false)
+  const [gameActive, setGameActive] = useState(false)
   const [guessCount, setGuessCount] = useState(0)
   const [gameTime, setGameTime] = useState(0)
   const [wordToGuess, setWordToGuess] = useState("randomWord")
   const [wordLengthAsArray, setWordLengthAsArray] = useState([""])
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setGameTime(gameTime + 1);
-    }, 1000);
+    if (gameActive) {
+      const interval = setInterval(() => {
+        setGameTime(gameTime + 1);
+      }, 1000);
+      return () => clearInterval(interval);
+    }
 
-    return () => clearInterval(interval);
-  }, [gameTime]);
+  }, [gameTime, gameActive]);
 
   function updateGuessCount() {
     const guesses = guessCount + 1;
     setGuessCount(guesses)
+    return guesses
   }
 
   function resetGameTimer() {
     setGameTime(0)
   }
 
-  function completeGame() {
+  function completeGame(letterHistory: string[]) {
     const updatedGameHistory = [...gameHistory];
-    const gameStats: GameStats = {guessCount: guessCount, word: wordToGuess, time: gameTime}
+    const gameStats: GameStats = {
+      guessCount: guessCount,
+      word: wordToGuess,
+      time: gameTime,
+      letterHistory: letterHistory
+    }
     updatedGameHistory.push(gameStats)
     setGameHistory(updatedGameHistory);
     const existingGameData: GameStats[] = getLocalGameHistoryData()
@@ -48,11 +57,15 @@ function Game() {
     localStorage.setItem("gameStats", JSON.stringify(existingGameData));
     resetGuessCount();
     resetGameTimer()
-    setGameInProgress(false)
+    setInGame(false)
   }
 
   function resetGuessCount() {
     setGuessCount(0)
+  }
+
+  function startGameTimer() {
+    setGameActive(false)
   }
 
   async function startGame() {
@@ -62,11 +75,12 @@ function Game() {
     resetGuessCount()
     setWordToGuess(newWord)
     setWordLengthAsArray(guessArray)
-    setGameInProgress(true)
+    setInGame(true)
+    setGameActive(true)
   }
 
   function mainView() {
-    if (!gameInProgress) {
+    if (!inGame) {
       return <LandingPage startGameAction={startGame} gameStats={gameHistory}/>
     } else {
       return (
@@ -75,7 +89,11 @@ function Game() {
                 startingGuessArray={wordLengthAsArray}
                 updateGuessCount={updateGuessCount}
                 currentWord={wordToGuess}
-                complete={completeGame}/>
+                currentGuessCount={guessCount}
+                complete={completeGame}
+                stopGameTimer={startGameTimer}
+            />
+
             <div className={"Counters"}>
               <GuessCounter guesses={guessCount}/>
               <GameTimer gameTime={gameTime}/>
