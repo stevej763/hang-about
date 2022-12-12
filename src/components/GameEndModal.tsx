@@ -2,6 +2,7 @@ import React from "react";
 import './GameOverModal.css'
 import {GameStats} from "./types";
 import alphabet from "../utils/Alphabet";
+import FormattedTime from "./FormattedTime";
 
 interface GameEndModalProps {
   isVisible: boolean;
@@ -11,20 +12,6 @@ interface GameEndModalProps {
 
 function GameEndModal({isVisible, completeGame, gameStats}: GameEndModalProps) {
 
-  function getLetterCountFor(letter: string) {
-    let count = 0;
-    gameStats.letterHistory.forEach(guess => guess === letter ? count++ : null)
-    return <td>{count}</td>;
-  }
-
-  function printLetterHeadings() {
-    return alphabet.map(letter => <th className={"AlphabetHeading"}>{letter}</th>)
-  }
-
-  function printLetterCounts() {
-    return alphabet.map(letter => getLetterCountFor(letter))
-  }
-
   function getModal() {
     if (isVisible) {
       return <section className={"Modal"}>
@@ -33,37 +20,22 @@ function GameEndModal({isVisible, completeGame, gameStats}: GameEndModalProps) {
           <h1>{gameStats.word}</h1>
           <div className={"DataSummary"}>
             <div className={"GuessCount"}>
-              <span>Letters guessed:</span>
+              <span>Guesses:</span>
               <span>{gameStats.guessCount}</span>
             </div>
             <div className={"TimeTaken"}>
-              <span>Time taken(s): </span>
-              <span>{gameStats.time}</span>
+              <span>Time taken: </span>
+              <FormattedTime time={gameStats.time}/>
             </div>
           </div>
           <div className={"AlphabetStats"}>
-            <table className={"AlphabetTable"}>
-              <thead>
-              <tr>
-                {printLetterHeadings()}
-              </tr>
-              </thead>
-              <tbody>
-              <tr>
-                {printLetterCounts()}
-              </tr>
-              </tbody>
-            </table>
           </div>
           <button onClick={completeGame} className="EndGameButton">Done</button>
         </div>
       </section>
     }
-    return <span/>
-
   }
-
-  return getModal()
+  return <div>{getModal()}</div>
 }
 
 export default GameEndModal

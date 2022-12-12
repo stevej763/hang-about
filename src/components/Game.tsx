@@ -25,8 +25,8 @@ function Game() {
   useEffect(() => {
     if (gameActive) {
       const interval = setInterval(() => {
-        setGameTime(gameTime + 1);
-      }, 1000);
+        setGameTime(gameTime + 10);
+      }, 10);
       return () => clearInterval(interval);
     }
 

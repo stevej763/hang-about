@@ -45,17 +45,18 @@ function CurrentWordView({startingGuessArray, currentWord, currentGuessCount, ga
   }
 
   function handleArrowKeyInput(userInputKey: string, inputIndex: number) {
-    if (userInputKey === "ArrowRight") {
+    if (userInputKey === "ARROWRIGHT") {
       toNextCharacter(inputIndex)
     }
-    if (userInputKey === "ArrowLeft") {
+    if (userInputKey === "ARROWLEFT") {
       toPreviousCharacter(inputIndex)
     }
   }
 
-  function updateGuessProgress(updatedLetters: string[]) {
+  function updateGuessProgress(updatedLetters: string[], currentTarget: HTMLInputElement) {
     setCurrentLettersOnPage(updatedLetters);
     if (updatedLetters.join("") === currentWord) {
+      currentTarget.blur()
       showEndGameModal()
     }
   }
@@ -73,31 +74,30 @@ function CurrentWordView({startingGuessArray, currentWord, currentGuessCount, ga
 
   function handleUserInput(event: KeyboardEvent<HTMLInputElement>, inputIndex: number) {
     event.preventDefault();
-    let userInputKey = event.key.toUpperCase();
+    const normalisedUserInput = event.key.toUpperCase();
     const inputElement = event.currentTarget;
-    handleArrowKeyInput(userInputKey, inputIndex);
+    handleArrowKeyInput(normalisedUserInput, inputIndex);
     if (!keyDown) {
       setKeyDown(true)
       let updatedLetters = [...currentLettersOnPage]
-      if (isValidInput(userInputKey)) {
-        updateLetterHistory(userInputKey)
+      if (isValidInput(normalisedUserInput)) {
+        updateLetterHistory(normalisedUserInput)
         updateGuessCount()
-        handleLetterAddition(updatedLetters, userInputKey, inputElement);
+        handleLetterAddition(updatedLetters, normalisedUserInput, inputElement);
       }
     }
 
     function handleLetterAddition(currentLetters: string[], userInputLetter: string, currentTarget: HTMLInputElement) {
-      let userLetter: string = userInputLetter.toUpperCase()
-      currentLetters[inputIndex] = userLetter;
+      currentLetters[inputIndex] = userInputLetter;
       let letterAtGuessPosition = currentWord.charAt(inputIndex);
-      if (userGuessWasCorrect(userLetter, letterAtGuessPosition)) {
+      if (userGuessWasCorrect(userInputLetter, letterAtGuessPosition)) {
         currentTarget.classList.remove("letter-input-incorrect")
         currentTarget.classList.add("letter-input-correct")
       } else {
         currentTarget.classList.remove("letter-input-correct")
         currentTarget.classList.add("letter-input-incorrect")
       }
-      updateGuessProgress(currentLetters)
+      updateGuessProgress(currentLetters, currentTarget)
     }
   }
 

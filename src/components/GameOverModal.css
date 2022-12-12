@@ -5,6 +5,7 @@
     justify-content: center;
     align-content: center;
     text-align: center;
+    margin: auto;
 }
 
 .DataSummary {
@@ -48,7 +49,9 @@
 }
 
 .EndGameButton {
-    padding: 10px;
+    margin: auto;
+    min-width: 200px;
+    padding: 10px 0;
     background: linear-gradient(90deg, cadetblue, cornflowerblue);
     border: solid #78c708 3px;
     border-radius: 5px;
@@ -58,6 +61,7 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;;
     color: black;
+    cursor: pointer;
 }
 
 .EndGameButton:focus {

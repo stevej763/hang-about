@@ -1,6 +1,7 @@
 import React from "react";
 import {GameStats} from "./types";
 import "./GameStatsTable.css"
+import FormattedTime from "./FormattedTime";
 
 interface GameStatsTableProps {
   gameStats: GameStats[]
@@ -13,7 +14,7 @@ function GameStatsTable({gameStats}: GameStatsTableProps) {
       <td>{gameNumber}</td>
       <td>{game.word}</td>
       <td>{game.guessCount}</td>
-      <td>{game.time}</td>
+      <td><FormattedTime time={game.time} /></td>
     </tr>
 
   }
@@ -29,7 +30,7 @@ function GameStatsTable({gameStats}: GameStatsTableProps) {
             <th>Game Number</th>
             <th>Word</th>
             <th>Guesses</th>
-            <th>Time (seconds)</th>
+            <th>Time</th>
           </tr>
           </thead>
           <tbody>

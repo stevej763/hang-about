@@ -31,6 +31,7 @@
 }
 
 .PlayButton:hover {
+    cursor: pointer;
     border: solid #78c708 3px;
 }
 
