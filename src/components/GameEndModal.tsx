@@ -18,7 +18,7 @@ function GameEndModal({isVisible, completeGame, gameStats}: GameEndModalProps) {
   }
 
   function printLetterHeadings() {
-    return alphabet.map(letter => <th>{letter}</th>)
+    return alphabet.map(letter => <th className={"AlphabetHeading"}>{letter}</th>)
   }
 
   function printLetterCounts() {

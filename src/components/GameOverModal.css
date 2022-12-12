@@ -35,11 +35,15 @@
 
 }
 
-.AlphabetTable th:nth-child(2n+1), td:nth-child(2n+1) {
+.AlphabetTable {
+    padding: 15px;
+}
+
+.AlphabetTable th:nth-child(2n+1), .AlphabetTable td:nth-child(2n+1) {
     background: #808080;
 }
 
-.AlphabetTable th:nth-child(2n), td:nth-child(2n) {
+.AlphabetTable th:nth-child(2n), .AlphabetTable td:nth-child(2n) {
     background: #464657;
 }
 
