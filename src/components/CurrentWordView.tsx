@@ -10,11 +10,12 @@ interface CurrentWordViewProps {
   currentWord: string
   updateGuessCount: () => void
   currentGuessCount: number
+  gameTime: number
   complete: (allLetters: string[]) => void
   stopGameTimer: () => void
 }
 
-function CurrentWordView({startingGuessArray, currentWord, currentGuessCount, updateGuessCount, complete, stopGameTimer}: CurrentWordViewProps) {
+function CurrentWordView({startingGuessArray, currentWord, currentGuessCount, gameTime, updateGuessCount, complete, stopGameTimer}: CurrentWordViewProps) {
 
   const emptyLetterHistory: string[] = [];
   const [keyDown, setKeyDown] = useState(false);
@@ -150,7 +151,7 @@ function CurrentWordView({startingGuessArray, currentWord, currentGuessCount, up
   return <div className={"CurrentGameLetters"}>
     <GameEndModal isVisible={gameOver}
                   completeGame={() => complete(letterHistory)}
-                  gameStats={ {letterHistory: letterHistory, guessCount: currentGuessCount, word: currentWord, time: 5} }/>
+                  gameStats={ {letterHistory: letterHistory, guessCount: currentGuessCount, word: currentWord, time: gameTime} }/>
     <ModalPageOverlay isVisible={gameOver}/>
     {getInputBoxes()}
   </div>

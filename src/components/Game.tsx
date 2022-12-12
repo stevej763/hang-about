@@ -90,6 +90,7 @@ function Game() {
                 updateGuessCount={updateGuessCount}
                 currentWord={wordToGuess}
                 currentGuessCount={guessCount}
+                gameTime={gameTime}
                 complete={completeGame}
                 stopGameTimer={startGameTimer}
             />
