@@ -1,7 +1,6 @@
 import React from "react";
 import './GameOverModal.css'
 import {GameStats} from "./types";
-import alphabet from "../utils/Alphabet";
 import FormattedTime from "./FormattedTime";
 
 interface GameEndModalProps {
@@ -30,7 +29,7 @@ function GameEndModal({isVisible, completeGame, gameStats}: GameEndModalProps) {
           </div>
           <div className={"AlphabetStats"}>
           </div>
-          <button onClick={completeGame} className="EndGameButton">Done</button>
+          <button autoFocus={true} onClick={completeGame} className="EndGameButton">Done</button>
         </div>
       </section>
     }

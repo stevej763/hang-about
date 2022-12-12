@@ -12,12 +12,14 @@
     color: #78c708;
 }
 
-.PlayButton {
+.StartButton {
+    outline: none;
+    margin: 20px auto;
+    width: 300px;
     padding: 10px;
-    background: linear-gradient(90deg,cadetblue, cornflowerblue);
-    border: solid #78c708 3px;
-    border-radius: 5px;
-    transition: 1s;
+    background: #78de86;
+    border: solid #59985e 3px;
+    border-radius: 8px;
     font-size: 20px;
     font-family: source-code-pro, monospace;
     -webkit-font-smoothing: antialiased;
@@ -25,24 +27,36 @@
     color: black;
 }
 
-.PlayButton:focus {
-    outline: none;
-    border: solid grey 3px;
+.StartText {
+    color: #282c34;
+    position: relative;
+    text-align: center;
+    margin: 0;
 }
 
-.PlayButton:hover {
+.StartText {
+    color: #363434;
+}
+
+.StartButton:focus {
+    border: solid #46ec52 3px;
+}
+
+.StartButton:hover {
     cursor: pointer;
-    border: solid #78c708 3px;
+    border: solid #46ec52 3px;
+    background: #2cd547;
+    box-shadow: 0 0 4px #7e7b7b;
+
 }
 
 @media only screen and (max-width: 600px) {
     .LandingPage {
         margin: 10px;
-
     }
 
-    .PlayButton {
-        width: 300px;
+    .WorkInProgress {
         margin: auto;
+        max-width: 300px;
     }
 }

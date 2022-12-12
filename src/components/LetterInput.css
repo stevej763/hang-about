@@ -1,7 +1,7 @@
 .LetterInput {
     color: #6b6b6b;
     text-align: center;
-    margin: 0 10px;
+    margin: 40px 10px;
     font-size: 5rem;
     font-family: source-code-pro, monospace;
     border: transparent;
@@ -9,15 +9,14 @@
     border-top: 5px transparent dashed;
     background: transparent;
     caret-color: transparent;
-    padding: 0 0.5rem;
-
+    padding: 0.5rem;
     border-radius: 3px;
 }
 
 @media only screen and (max-width: 600px) {
     .LetterInput {
         font-size: 2rem;
-        margin: 0 5px;
+        margin: 30px 5px 0;
     }
 }
 

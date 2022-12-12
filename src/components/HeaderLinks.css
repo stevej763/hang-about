@@ -1,0 +1,48 @@
+.HeaderLinks {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    padding-top: 5px;
+    padding-bottom: 20px;
+}
+
+.HowToPlay {
+    font-size: 1rem;
+    font-family: source-code-pro, monospace;
+    color: white;
+    background: none;
+    border: none;
+    padding: 0;
+    outline: none;
+}
+
+.BuyMeACoffee {
+    text-decoration: none;
+}
+
+.HeaderLink {
+    font-size: 1rem;
+    font-family: source-code-pro, monospace;
+    color: white;
+    background: none;
+    border: none;
+    padding: 0;
+    outline: none;
+}
+
+.HeaderLink:hover {
+    font-size: 1rem;
+    cursor: pointer;
+    text-decoration: underline;
+    text-decoration-style: dashed;
+}
+
+.HeaderSpacer {
+    padding: 0 8px;
+}
+
+@media only screen and (max-width: 600px) {
+    .HeaderLinks {
+        padding-top: 0;
+    }
+}

@@ -9,16 +9,40 @@
   color: white;
 }
 
+.Modal {
+  position: absolute;
+  background-color: #414141;
+  border: 1px solid #78c708;
+  padding: 1rem;
+  min-height: 300px;
+  max-width: 600px;
+  left: 0;
+  right: 0;
+  margin: auto;
+  z-index: 2;
+  border-radius: 15px;
+}
+
+.HideModal {
+  display: none;
+}
+
+@media only screen and (max-width: 600px) {
+  .Modal {
+    max-width: 100%;
+    min-height: 50vh;
+  }
+}
+
 .PageTitle {
-  padding: 40px 0;
+  padding: 40px 20px 0;
   font-size: 50px;
   text-align: center;
-  margin: 0 0 100px;
+  margin: 0;
 }
 
 @media only screen and (max-width: 600px) {
   .PageTitle {
-    padding: 5px 0;
-    margin: 0 0 20px;
+    padding: 0;
   }
 }

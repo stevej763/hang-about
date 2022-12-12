@@ -1,0 +1,22 @@
+.CloseModal {
+    display: flex;
+    justify-content: right;
+}
+
+.HowToPlayContent {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+}
+
+.InstructionsList li {
+    padding-top: 15px
+}
+
+.ModalExitButton {
+    position: absolute;
+    margin-top: 0.3rem;
+    margin-right: 0.5rem;
+    padding: 0 5px;
+    font-size: 20px;
+}

@@ -30,24 +30,6 @@
     margin: 3px;
 }
 
-.AlphabetStats {
-    display: flex;
-    justify-content: center;
-
-}
-
-.AlphabetTable {
-    padding: 15px;
-}
-
-.AlphabetTable th:nth-child(2n+1), .AlphabetTable td:nth-child(2n+1) {
-    background: #808080;
-}
-
-.AlphabetTable th:nth-child(2n), .AlphabetTable td:nth-child(2n) {
-    background: #464657;
-}
-
 .EndGameButton {
     margin: auto;
     min-width: 200px;
@@ -73,29 +55,4 @@
     border: solid #78c708 3px;
 }
 
-
-.Modal {
-    position: absolute;
-    background-color: #414141;
-    border: 1px solid #78c708;
-    padding: 1rem;
-    min-height: 300px;
-    max-width: 600px;
-    left: 0;
-    right: 0;
-    margin: auto;
-    z-index: 2;
-    border-radius: 15px;
-}
-
-@media only screen and (max-width: 600px) {
-    .Modal {
-        max-width: 100%;
-        min-height: 50vh;
-    }
-}
-
-.HideModal {
-    display: none;
-}
 
