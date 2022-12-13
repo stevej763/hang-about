@@ -19,7 +19,7 @@ function HowToPlayModal({toggle} : HowToPlayModelProps) {
           <li><strong>Guess the word as fast as possible with the fewest mistakes!</strong></li>
           <li>Type in letters to start guessing the word</li>
           <li>The faster you guess the word, the more points you score</li>
-          <li></li>
+          <li>The more letters you guess incorrectly, the lower your score</li>
         </ul>
       </div>
     </div>

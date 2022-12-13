@@ -53,14 +53,6 @@ function CurrentWordView({startingGuessArray, currentWord, currentGuessCount, ga
     }
   }
 
-  function updateGuessProgress(updatedLetters: string[], currentTarget: HTMLInputElement) {
-    setCurrentLettersOnPage(updatedLetters);
-    if (updatedLetters.join("") === currentWord) {
-      currentTarget.blur()
-      showEndGameModal()
-    }
-  }
-
   function showEndGameModal() {
     setGameOver(true)
     stopGameTimer()
@@ -79,11 +71,11 @@ function CurrentWordView({startingGuessArray, currentWord, currentGuessCount, ga
     handleArrowKeyInput(normalisedUserInput, inputIndex);
     if (!keyDown) {
       setKeyDown(true)
-      let updatedLetters = [...currentLettersOnPage]
+      let currentLetters = [...currentLettersOnPage]
       if (isValidInput(normalisedUserInput)) {
         updateLetterHistory(normalisedUserInput)
         updateGuessCount()
-        handleLetterAddition(updatedLetters, normalisedUserInput, inputElement);
+        handleLetterAddition(currentLetters, normalisedUserInput, inputElement);
       }
     }
 
@@ -101,11 +93,18 @@ function CurrentWordView({startingGuessArray, currentWord, currentGuessCount, ga
     }
   }
 
+  function updateGuessProgress(updatedLetters: string[], currentTarget: HTMLInputElement) {
+    setCurrentLettersOnPage(updatedLetters);
+    if (updatedLetters.join("") === currentWord) {
+      currentTarget.blur()
+      showEndGameModal()
+    }
+  }
+
   function changeFocus(event: KeyboardEvent<HTMLInputElement>, inputIndex: number) {
     event.preventDefault();
-
     if (keyDown) {
-      const userInputLetter: string = event.key;
+      const userInputLetter: string = event.key.toUpperCase();
       if (isValidInput(userInputLetter) && userGuessWasCorrect(userInputLetter, currentWord.charAt(inputIndex))) {
         toNextCharacter(inputIndex);
       }
@@ -117,14 +116,14 @@ function CurrentWordView({startingGuessArray, currentWord, currentGuessCount, ga
   function toNextCharacter(inputIndex: number) {
     if (!gameOver) {
       let nextIndex = inputIndex + 1;
-      let nextInput = document.getElementById("letterInput-" + nextIndex);
+      let nextInputPageElement = document.getElementById("letterInput-" + nextIndex);
       if (nextIndex === startingGuessArray.length) {
         nextIndex = 0
-        nextInput = document.getElementById("letterInput-" + nextIndex);
+        nextInputPageElement = document.getElementById("letterInput-" + nextIndex);
       }
-      let isAlreadyCompleted = nextInput?.classList.contains("letter-input-correct");
+      const isAlreadyCompleted = nextInputPageElement?.classList.contains("letter-input-correct");
       if (!isAlreadyCompleted) {
-        nextInput?.focus()
+        nextInputPageElement?.focus()
       } else {
         toNextCharacter(nextIndex)
       }

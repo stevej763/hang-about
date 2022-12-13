@@ -1,4 +1,3 @@
-import React, {useState} from "react";
 import './HeaderLinks.css'
 import HowToPlayModal from "./HowToPlayModal";
 

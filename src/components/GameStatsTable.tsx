@@ -2,7 +2,6 @@ import React from "react";
 import {GameStats} from "./types";
 import "./GameStatsTable.css"
 import FormattedTime from "./FormattedTime";
-import guessCounter from "./GuessCounter";
 
 interface GameStatsTableProps {
   gameStats: GameStats[]
@@ -21,9 +20,6 @@ function GameStatsTable({gameStats}: GameStatsTableProps) {
 
       const totalPenaltyPoints = gameTimePenalty + guessCountPenalty;
 
-      console.log("time penalty:" + gameTimePenalty)
-      console.log("guess count penalty:" + guessCountPenalty)
-      console.log("total Penalty points:" + totalPenaltyPoints)
       return <td>{baseScore - totalPenaltyPoints}</td>
     }
 

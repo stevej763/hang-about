@@ -19,7 +19,7 @@ function Game() {
   const [gameActive, setGameActive] = useState(false)
   const [guessCount, setGuessCount] = useState(0)
   const [gameTime, setGameTime] = useState(0)
-  const [wordToGuess, setWordToGuess] = useState("randomWord")
+  const [wordToGuess, setWordToGuess] = useState("none")
   const [wordLengthAsArray, setWordLengthAsArray] = useState([""])
 
   useEffect(() => {
