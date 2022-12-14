@@ -1,6 +1,7 @@
 .LandingPage {
     display: flex;
     flex-direction: column;
+    align-items: center;
 }
 
 .WorkInProgress {
@@ -10,21 +11,6 @@
 
 .WorkInProgress a {
     color: #78c708;
-}
-
-.StartButton {
-    outline: none;
-    margin: 20px auto;
-    width: 300px;
-    padding: 10px;
-    background: #78de86;
-    border: solid #59985e 3px;
-    border-radius: 8px;
-    font-size: 20px;
-    font-family: source-code-pro, monospace;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;;
-    color: black;
 }
 
 .StartText {
@@ -38,16 +24,12 @@
     color: #363434;
 }
 
-.StartButton:focus {
-    border: solid #46ec52 3px;
+.Disabled {
+    background: #464657;
 }
 
-.StartButton:hover {
-    cursor: pointer;
-    border: solid #46ec52 3px;
-    background: #2cd547;
-    box-shadow: 0 0 4px #7e7b7b;
-
+.Disabled:hover {
+    background: #464657;
 }
 
 @media only screen and (max-width: 600px) {

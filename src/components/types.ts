@@ -5,3 +5,9 @@ export interface GameStats {
   time: number
   letterHistory: string[]
 }
+
+export interface DailyGames {
+  threeOrFour: {}
+  fiveOrSix: {}
+  sevenOrEight: {}
+}

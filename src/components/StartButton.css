@@ -1,0 +1,37 @@
+.StartButton {
+    outline: none;
+    margin: 20px 5px;
+    width: 200px;
+    padding: 10px;
+    background: #78de86;
+    border: solid #59985e 3px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-family: source-code-pro, monospace;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;;
+    color: black;
+}
+.StartButton:focus {
+    border: solid #46ec52 3px;
+}
+
+.StartButton:hover {
+    cursor: pointer;
+    border: solid #46ec52 3px;
+    background: #2cd547;
+    box-shadow: 0 0 4px #7e7b7b;
+
+}
+
+
+@media only screen and (max-width: 600px) {
+    .StartButton {
+        font-size: 0.4rem;
+        outline: none;
+        margin: 10px 5px;
+        width: 100px;
+
+    }
+}
+

@@ -1,10 +1,11 @@
+import "./Game.css"
+import React, {useEffect, useState} from "react";
+import {GameStats} from "./types";
+import {createEmptyArrayForWord} from "../utils/wordGeneratorUtil";
+import {getLongDailyWord, getMediumDailyWord, getRandomWord, getShortDailyWord} from "../api/DailyWords";
 import GuessCounter from "./GuessCounter";
 import CurrentWordView from "./CurrentWordView";
-import React, {useEffect, useState} from "react";
-import {createEmptyArrayForWord, randomWord} from "../utils/wordGeneratorUtil";
 import LandingPage from "./LandingPage";
-import "./Game.css"
-import {GameStats} from "./types";
 import GameTimer from "./GameTimer";
 
 function Game() {
@@ -68,8 +69,7 @@ function Game() {
     setGameActive(false)
   }
 
-  async function startGame() {
-    const newWord = await randomWord();
+  function triggerGameFor(newWord: string) {
     const guessArray = createEmptyArrayForWord(newWord);
     resetGameTimer()
     resetGuessCount()
@@ -79,9 +79,33 @@ function Game() {
     setGameActive(true)
   }
 
+  async function startUnlimitedMode() {
+    const newWord = await getRandomWord();
+    triggerGameFor(newWord);
+  }
+
+  async function shortRoundMode() {
+    const newWord = await getShortDailyWord();
+    triggerGameFor(newWord)
+  }
+  async function mediumRoundMode() {
+    const newWord = await getMediumDailyWord();
+    triggerGameFor(newWord)
+  }
+  async function longRoundMode() {
+    const newWord = await getLongDailyWord();
+    triggerGameFor(newWord)
+  }
+
+
   function mainView() {
     if (!inGame) {
-      return <LandingPage startGameAction={startGame} gameStats={gameHistory}/>
+      return <LandingPage
+          unlimitedModeAction={startUnlimitedMode}
+          shortRoundAction={shortRoundMode}
+          mediumRoundAction={mediumRoundMode}
+          longRoundAction={longRoundMode}
+          gameStats={gameHistory}/>
     } else {
       return (
           <div className="Play">

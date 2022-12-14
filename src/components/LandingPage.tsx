@@ -4,13 +4,25 @@ import {GameStats} from "./types";
 import GameStatsTable from "./GameStatsTable";
 import HeaderLinks from "./HeaderLinks";
 import ModalPageOverlay from "./ModalPageOverlay";
+import GameModeButtons from "./GameModeButtons"
+import StartButton from "./StartButton";
 
 interface LandingPageProps {
-  startGameAction: () => void;
+  unlimitedModeAction: () => void;
+  shortRoundAction: () => void
+  mediumRoundAction: () => void
+  longRoundAction: () => void
   gameStats: GameStats[]
 }
 
-function LandingPage({startGameAction, gameStats}: LandingPageProps) {
+function LandingPage(
+    {
+      unlimitedModeAction,
+      shortRoundAction,
+      mediumRoundAction,
+      longRoundAction,
+      gameStats
+    }: LandingPageProps) {
 
   const [showHowToPlay, setShowHowToPlay] = useState(false);
 
@@ -30,21 +42,22 @@ function LandingPage({startGameAction, gameStats}: LandingPageProps) {
     }
   }
 
+  function getGameStartButtons() {
+    if (process.env.REACT_APP_UNLIMITED_MODE === "true") {
+      return <StartButton startGame={unlimitedModeAction}/>
+    }
+    return <GameModeButtons
+        shortRoundAction={shortRoundAction}
+        mediumRoundAction={mediumRoundAction}
+        longRoundAction={longRoundAction}/>
+  }
+
   return (
       <div className={"LandingPage"}>
-        <HeaderLinks
-            showHowToPlay={showHowToPlay}
-            toggleModal={() => handleHowToPlayModel()}
-        />
+        <HeaderLinks showHowToPlay={showHowToPlay} toggleModal={handleHowToPlayModel}/>
         <ModalPageOverlay isVisible={showHowToPlay}/>
-        <button
-            className={"StartButton"}
-            tabIndex={0}
-            onClick={startGameAction}
-            autoFocus={true}>
-            <h2 className={"StartText"}>START</h2>
-        </button>
-        {<GameStatsTable gameStats={gameStats}/>}
+        {getGameStartButtons()}
+        <GameStatsTable gameStats={gameStats}/>
         {displayWipInfo()}
       </div>
   )

@@ -41,9 +41,9 @@ function GameStatsTable({gameStats}: GameStatsTableProps) {
         <table className={"StatsTable"}>
           <thead>
           <tr>
-            <th>Game Number</th>
+            <th>Date</th>
             <th>Word</th>
-            <th>Guesses</th>
+            <th>Guess Count</th>
             <th>Time</th>
             <th>Score</th>
           </tr>
