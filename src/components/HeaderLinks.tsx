@@ -16,10 +16,13 @@ function HeaderLinks({showHowToPlay, toggleModal}: HeaderLinksProps) {
 
   return <div className={"HeaderLinks"}>
     <span className={"HeaderSpacer"}> | </span>
-    <button className={"HowToPlay HeaderLink"} onClick={toggleModal}> How to play</button>
+    <a className={"HeaderLink"}
+       target={"_blank"}
+       rel="noreferrer"
+       onClick={toggleModal}> How to play</a>
     <span className={"HeaderSpacer"}> | </span>
     <a
-        className={"BuyMeACoffee HeaderLink"}
+        className={"HeaderLink"}
         target={"_blank"}
         rel="noreferrer"
         href={process.env.REACT_APP_BUY_ME_A_COFFEE}>Buy me a coffee</a>

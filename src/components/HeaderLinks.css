@@ -6,20 +6,6 @@
     padding-bottom: 20px;
 }
 
-.HowToPlay {
-    font-size: 1rem;
-    font-family: source-code-pro, monospace;
-    color: white;
-    background: none;
-    border: none;
-    padding: 0;
-    outline: none;
-}
-
-.BuyMeACoffee {
-    text-decoration: none;
-}
-
 .HeaderLink {
     font-size: 1rem;
     font-family: source-code-pro, monospace;
@@ -28,6 +14,8 @@
     border: none;
     padding: 0;
     outline: none;
+    text-decoration: none;
+
 }
 
 .HeaderLink:hover {
