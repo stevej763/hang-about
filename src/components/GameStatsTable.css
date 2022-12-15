@@ -31,5 +31,8 @@
         margin: 20px;
         color: #ffffff;
     }
+    .StatsTable th {
+        padding: 1rem 1rem;
+    }
 }
 
