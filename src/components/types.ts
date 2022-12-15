@@ -7,7 +7,8 @@ export interface GameStats {
 }
 
 export interface DailyStats {
-  short: {complete: boolean}
-  medium: {complete: boolean}
-  long: {complete: boolean}
+  date: string
+  short: {complete: boolean, gameStats: GameStats}
+  medium: {complete: boolean, gameStats: GameStats}
+  long: {complete: boolean, gameStats: GameStats}
 }

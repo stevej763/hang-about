@@ -15,13 +15,37 @@ function Game() {
     return parsedStorageData;
   }
 
+  function getDailyGameLogData() :DailyStats {
+    const today = new Date().setHours(0 , 0, 0, 0).toString();
+    const fakeDay = new Date("2022-12-16").setHours(0 , 0, 0, 0).toString();
+
+
+    const defaultDailyStats: DailyStats = {
+      date: today,
+      short: {complete: false, gameStats: {guessCount: 0, word: "", time: 0, letterHistory:[]}},
+      medium: {complete: false, gameStats: {guessCount: 0, word: "", time: 0, letterHistory:[]}},
+      long: {complete: false, gameStats: {guessCount: 0, word: "", time: 0, letterHistory:[]}}
+    }
+
+    const dailyLogString: string = localStorage.getItem("dailyGameLog") || JSON.stringify(defaultDailyStats);
+    const parsedDailyData: DailyStats = JSON.parse(dailyLogString);
+
+    if (parsedDailyData.date !== today) {
+      return defaultDailyStats
+    }
+
+    return parsedDailyData;
+  }
+
+  const [dailyGameLog, setDailyGameLog] = useState(getDailyGameLogData())
   const [gameHistory, setGameHistory] = useState(getLocalGameHistoryData())
   const [inGame, setInGame] = useState(false)
   const [gameActive, setGameActive] = useState(false)
   const [guessCount, setGuessCount] = useState(0)
   const [gameTime, setGameTime] = useState(0)
-  const [wordToGuess, setWordToGuess] = useState("none")
+  const [wordToGuess, setWordToGuess] = useState("loading")
   const [wordLengthAsArray, setWordLengthAsArray] = useState([""])
+  const [gameMode, setGameMode] = useState("")
 
   useEffect(() => {
     if (gameActive) {
@@ -43,14 +67,35 @@ function Game() {
     setGameTime(0)
   }
 
-  function completeGame(letterHistory: string[]) {
-    const updatedGameHistory = [...gameHistory];
+  function completeGame(letterHistory: string[], gameMode: string) {
     const gameStats: GameStats = {
       guessCount: guessCount,
       word: wordToGuess,
       time: gameTime,
       letterHistory: letterHistory
     }
+    let currentDailyGameLog: DailyStats = dailyGameLog
+
+    switch (gameMode) {
+      case "short":
+        currentDailyGameLog.short.complete =true;
+        currentDailyGameLog.short.gameStats = gameStats
+        break;
+      case "medium":
+        currentDailyGameLog.medium.complete =true;
+        currentDailyGameLog.medium.gameStats = gameStats
+
+        break;
+      case "long":
+        currentDailyGameLog.long.complete =true;
+        currentDailyGameLog.long.gameStats = gameStats
+
+        break;
+    }
+    setDailyGameLog(currentDailyGameLog)
+
+    localStorage.setItem("dailyGameLog", JSON.stringify(currentDailyGameLog));
+    const updatedGameHistory = [...gameHistory];
     updatedGameHistory.push(gameStats)
     setGameHistory(updatedGameHistory);
     const existingGameData: GameStats[] = getLocalGameHistoryData()
@@ -70,51 +115,45 @@ function Game() {
     setGameActive(false)
   }
 
-  function triggerGameFor(newWord: string) {
+  function triggerGameFor(newWord: string, gameMode: string) {
     const guessArray = createEmptyArrayForWord(newWord);
     resetGameTimer()
     resetGuessCount()
     setWordToGuess(newWord)
     setWordLengthAsArray(guessArray)
+    setGameMode(gameMode)
     setInGame(true)
     setGameActive(true)
   }
 
   async function startUnlimitedMode() {
     const newWord = await getRandomWord();
-    triggerGameFor(newWord);
+    triggerGameFor(newWord, "unlimited");
   }
 
   async function shortRoundMode() {
     const newWord = await getShortDailyWord();
-    triggerGameFor(newWord)
+    triggerGameFor(newWord, "short")
   }
   async function mediumRoundMode() {
     const newWord = await getMediumDailyWord();
-    triggerGameFor(newWord)
+    triggerGameFor(newWord, "medium")
   }
   async function longRoundMode() {
     const newWord = await getLongDailyWord();
-    triggerGameFor(newWord)
+    triggerGameFor(newWord, "long")
   }
 
 
   function mainView() {
     if (!inGame) {
-
-      const dailyStats: DailyStats = {
-        short: {complete: false},
-        medium: {complete: false},
-        long: {complete: true}
-      }
-
       return <LandingPage
           unlimitedModeAction={startUnlimitedMode}
           shortRoundAction={shortRoundMode}
           mediumRoundAction={mediumRoundMode}
           longRoundAction={longRoundMode}
           gameStats={gameHistory}
-          dailyStats={dailyStats}
+          dailyStats={dailyGameLog}
       />
     } else {
       return (
@@ -126,6 +165,7 @@ function Game() {
                 currentGuessCount={guessCount}
                 gameTime={gameTime}
                 complete={completeGame}
+                gameMode={gameMode}
                 stopGameTimer={startGameTimer}
             />
 

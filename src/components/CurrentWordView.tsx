@@ -6,16 +6,26 @@ import GameEndModal from "./GameEndModal";
 import ModalPageOverlay from "./ModalPageOverlay";
 
 interface CurrentWordViewProps {
-  startingGuessArray: string[]
-  currentWord: string
-  updateGuessCount: () => void
-  currentGuessCount: number
-  gameTime: number
-  complete: (allLetters: string[]) => void
-  stopGameTimer: () => void
+  startingGuessArray: string[];
+  currentWord: string;
+  updateGuessCount: () => void;
+  currentGuessCount: number;
+  gameTime: number;
+  complete: (allLetters: string[], gameMode: string) => void;
+  stopGameTimer: () => void;
+  gameMode: string;
 }
 
-export default function CurrentWordView({startingGuessArray, currentWord, currentGuessCount, gameTime, updateGuessCount, complete, stopGameTimer}: CurrentWordViewProps) {
+export default function CurrentWordView({
+                                          startingGuessArray,
+                                          currentWord,
+                                          currentGuessCount,
+                                          gameTime,
+                                          updateGuessCount,
+                                          complete,
+                                          stopGameTimer,
+                                          gameMode
+                                        }: CurrentWordViewProps) {
 
   const emptyLetterHistory: string[] = [];
   const [keyDown, setKeyDown] = useState(false);
@@ -28,13 +38,13 @@ export default function CurrentWordView({startingGuessArray, currentWord, curren
         <div className={"InputBoxes"}>
           {startingGuessArray.map((value, index) =>
               <LetterInput
-                key={index}
-                autoFocus={index === 0}
-                index={index}
-                checkInput={(event: KeyboardEvent<HTMLInputElement>, index: number) => handleUserInput(event, index)}
-                changeFocus={(event: KeyboardEvent<HTMLInputElement>, index: number) => changeFocus(event, index)}
-                currentCharacter={currentLettersOnPage[index]}
-            />)
+                  key={index}
+                  autoFocus={index === 0}
+                  index={index}
+                  checkInput={(event: KeyboardEvent<HTMLInputElement>, index: number) => handleUserInput(event, index)}
+                  changeFocus={(event: KeyboardEvent<HTMLInputElement>, index: number) => changeFocus(event, index)}
+                  currentCharacter={currentLettersOnPage[index]}
+              />)
           }
         </div>
     )
@@ -134,7 +144,7 @@ export default function CurrentWordView({startingGuessArray, currentWord, curren
     let previousIndex = inputIndex - 1;
     let previousInput = document.getElementById("letterInput-" + previousIndex);
     if (previousIndex === -1) {
-      previousIndex = startingGuessArray.length -1
+      previousIndex = startingGuessArray.length - 1
       previousInput = document.getElementById("letterInput-" + previousIndex);
     }
     let isAlreadyCompleted = previousInput?.classList.contains("letter-input-correct");
@@ -146,11 +156,15 @@ export default function CurrentWordView({startingGuessArray, currentWord, curren
   }
 
 
-
   return <div className={"CurrentGameLetters"}>
     <GameEndModal isVisible={gameOver}
-                  completeGame={() => complete(letterHistory)}
-                  gameStats={ {letterHistory: letterHistory, guessCount: currentGuessCount, word: currentWord, time: gameTime} }/>
+                  completeGame={() => complete(letterHistory, gameMode)}
+                  gameStats={{
+                    letterHistory: letterHistory,
+                    guessCount: currentGuessCount,
+                    word: currentWord,
+                    time: gameTime
+                  }}/>
     <ModalPageOverlay isVisible={gameOver}/>
     {getInputBoxes()}
   </div>
