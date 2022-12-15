@@ -38,5 +38,17 @@ input:focus {
     background: #bd4141;
     border-top: solid #bd4141 5px;
     border-bottom: #e87930 5px solid;
+}
 
+.Animate {
+    animation-name: example;
+    animation-duration: 0.3s;
+    transition: transform 0.8s;
+    transform-style: preserve-3d;
+    transform: rotateY(360deg);
+}
+
+@keyframes example {
+    from {background-color: #bd4141;}
+    to {background-color: #eed708;}
 }

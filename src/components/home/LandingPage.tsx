@@ -1,9 +1,9 @@
 import "./LandingPage.css"
 import React, {useState} from "react";
-import {DailyStats, GameStats} from "./types";
+import {DailyStats, GameStats} from "../types";
 import GameStatsTable from "./GameStatsTable";
 import HeaderLinks from "./HeaderLinks";
-import ModalPageOverlay from "./ModalPageOverlay";
+import ModalPageOverlay from "../ModalPageOverlay";
 import GameModeButtons from "./GameModeButtons"
 import StartButton from "./StartButton";
 

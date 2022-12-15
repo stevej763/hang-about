@@ -1,11 +1,11 @@
 import "./Game.css"
 import React, {useEffect, useState} from "react";
-import {DailyStats, GameStats} from "./types";
-import {createEmptyArrayForWord} from "../utils/wordGeneratorUtil";
-import {getLongDailyWord, getMediumDailyWord, getRandomWord, getShortDailyWord} from "../api/DailyWords";
+import {DailyStats, GameStats} from "../types";
+import {createEmptyArrayForWord} from "../../utils/wordGeneratorUtil";
+import {getLongDailyWord, getMediumDailyWord, getRandomWord, getShortDailyWord} from "../../api/DailyWords";
 import GuessCounter from "./GuessCounter";
-import CurrentWordView from "./CurrentWordView";
-import LandingPage from "./LandingPage";
+import CurrentGameLetterInputs from "./CurrentGameLetterInputs";
+import LandingPage from "../home/LandingPage";
 import GameTimer from "./GameTimer";
 
 function Game() {
@@ -91,8 +91,8 @@ function Game() {
         break;
     }
     setDailyGameLog(currentDailyGameLog)
-
-    localStorage.setItem("dailyGameLog", JSON.stringify(currentDailyGameLog));
+    const dayLogString = JSON.stringify(currentDailyGameLog);
+    localStorage.setItem("dailyGameLog", dayLogString);
     const updatedGameHistory = [...gameHistory];
     updatedGameHistory.push(gameStats)
     setGameHistory(updatedGameHistory);
@@ -156,7 +156,7 @@ function Game() {
     } else {
       return (
           <div className="Play">
-            <CurrentWordView
+            <CurrentGameLetterInputs
                 startingGuessArray={wordLengthAsArray}
                 updateGuessCount={updateGuessCount}
                 currentWord={wordToGuess}

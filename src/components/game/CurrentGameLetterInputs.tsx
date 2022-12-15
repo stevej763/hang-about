@@ -1,9 +1,9 @@
 import React, {KeyboardEvent, useState} from "react";
+import "./CurrentGameLetterInputs.css"
 import LetterInput from "./LetterInput";
-import {isValidInput} from "../utils/userInputUtil";
-import "./CurrentWordView.css"
+import {isValidInput} from "../../utils/userInputUtil";
 import GameEndModal from "./GameEndModal";
-import ModalPageOverlay from "./ModalPageOverlay";
+import ModalPageOverlay from "../ModalPageOverlay";
 
 interface CurrentWordViewProps {
   startingGuessArray: string[];
@@ -16,16 +16,17 @@ interface CurrentWordViewProps {
   gameMode: string;
 }
 
-export default function CurrentWordView({
-                                          startingGuessArray,
-                                          currentWord,
-                                          currentGuessCount,
-                                          gameTime,
-                                          updateGuessCount,
-                                          complete,
-                                          stopGameTimer,
-                                          gameMode
-                                        }: CurrentWordViewProps) {
+export default function CurrentGameLetterInputs(
+    {
+      startingGuessArray,
+      currentWord,
+      currentGuessCount,
+      gameTime,
+      updateGuessCount,
+      complete,
+      stopGameTimer,
+      gameMode
+    }: CurrentWordViewProps) {
 
   const emptyLetterHistory: string[] = [];
   const [keyDown, setKeyDown] = useState(false);
@@ -63,9 +64,23 @@ export default function CurrentWordView({
     }
   }
 
+  function animateLetters() {
+    const htmlElements = startingGuessArray.map((value: any, index: number) => document.getElementById("letterInput-" + index))
+    const pause: number = 100;
+    htmlElements.forEach((htmlElement, index: number) => {
+      setTimeout(() => {
+        htmlElement?.classList.add("Animate")
+      }, index * pause);
+    })
+  }
+
   function showEndGameModal() {
-    setGameOver(true)
     stopGameTimer()
+    animateLetters()
+    setTimeout(() => {
+      setGameOver(true)
+    }, 1600);
+
   }
 
   function updateLetterHistory(userInputKey: string) {
@@ -154,7 +169,6 @@ export default function CurrentWordView({
       toPreviousCharacter(previousIndex)
     }
   }
-
 
   return <div className={"CurrentGameLetters"}>
     <GameEndModal isVisible={gameOver}

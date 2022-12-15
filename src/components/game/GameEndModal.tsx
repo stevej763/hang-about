@@ -1,7 +1,7 @@
 import React from "react";
 import './GameOverModal.css'
-import {GameStats} from "./types";
-import FormattedTime from "./FormattedTime";
+import {GameStats} from "../types";
+import FormattedTime from "../FormattedTime";
 
 interface GameEndModalProps {
   isVisible: boolean;

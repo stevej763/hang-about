@@ -1,5 +1,5 @@
 import './GameTimer.css'
-import FormattedTime from "./FormattedTime";
+import FormattedTime from "../FormattedTime";
 
 interface GameTimerProps {
   gameTime: number;

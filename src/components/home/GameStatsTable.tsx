@@ -1,7 +1,7 @@
 import React from "react";
-import {GameStats} from "./types";
+import {GameStats} from "../types";
 import "./GameStatsTable.css"
-import FormattedTime from "./FormattedTime";
+import FormattedTime from "../FormattedTime";
 
 interface GameStatsTableProps {
   gameStats: GameStats[]
