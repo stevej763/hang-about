@@ -6,8 +6,8 @@ export interface GameStats {
   letterHistory: string[]
 }
 
-export interface DailyGames {
-  threeOrFour: {}
-  fiveOrSix: {}
-  sevenOrEight: {}
+export interface DailyStats {
+  short: {complete: boolean}
+  medium: {complete: boolean}
+  long: {complete: boolean}
 }

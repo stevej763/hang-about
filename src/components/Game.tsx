@@ -1,6 +1,6 @@
 import "./Game.css"
 import React, {useEffect, useState} from "react";
-import {GameStats} from "./types";
+import {DailyStats, GameStats} from "./types";
 import {createEmptyArrayForWord} from "../utils/wordGeneratorUtil";
 import {getLongDailyWord, getMediumDailyWord, getRandomWord, getShortDailyWord} from "../api/DailyWords";
 import GuessCounter from "./GuessCounter";
@@ -55,7 +55,8 @@ function Game() {
     setGameHistory(updatedGameHistory);
     const existingGameData: GameStats[] = getLocalGameHistoryData()
     existingGameData.push(gameStats)
-    localStorage.setItem("gameStats", JSON.stringify(existingGameData));
+    const value = JSON.stringify(existingGameData);
+    localStorage.setItem("gameStats", value);
     resetGuessCount();
     resetGameTimer()
     setInGame(false)
@@ -100,12 +101,21 @@ function Game() {
 
   function mainView() {
     if (!inGame) {
+
+      const dailyStats: DailyStats = {
+        short: {complete: false},
+        medium: {complete: false},
+        long: {complete: true}
+      }
+
       return <LandingPage
           unlimitedModeAction={startUnlimitedMode}
           shortRoundAction={shortRoundMode}
           mediumRoundAction={mediumRoundMode}
           longRoundAction={longRoundMode}
-          gameStats={gameHistory}/>
+          gameStats={gameHistory}
+          dailyStats={dailyStats}
+      />
     } else {
       return (
           <div className="Play">

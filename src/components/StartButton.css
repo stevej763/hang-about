@@ -1,7 +1,7 @@
 .StartButton {
     outline: none;
     margin: 20px 5px;
-    width: 200px;
+    width: 180px;
     padding: 10px;
     background: #78de86;
     border: solid #59985e 3px;
@@ -21,6 +21,17 @@
     border: solid #46ec52 3px;
     background: #2cd547;
     box-shadow: 0 0 4px #7e7b7b;
+}
+
+.Disabled {
+    background: #464657;
+}
+
+.Disabled:hover {
+    border: solid #59985e 3px;
+    background: #464657;
+    box-shadow: none;
+    cursor: auto;
 
 }
 

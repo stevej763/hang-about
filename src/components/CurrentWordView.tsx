@@ -15,7 +15,7 @@ interface CurrentWordViewProps {
   stopGameTimer: () => void
 }
 
-function CurrentWordView({startingGuessArray, currentWord, currentGuessCount, gameTime, updateGuessCount, complete, stopGameTimer}: CurrentWordViewProps) {
+export default function CurrentWordView({startingGuessArray, currentWord, currentGuessCount, gameTime, updateGuessCount, complete, stopGameTimer}: CurrentWordViewProps) {
 
   const emptyLetterHistory: string[] = [];
   const [keyDown, setKeyDown] = useState(false);
@@ -155,5 +155,3 @@ function CurrentWordView({startingGuessArray, currentWord, currentGuessCount, ga
     {getInputBoxes()}
   </div>
 }
-
-export default CurrentWordView;

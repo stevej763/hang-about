@@ -1,6 +1,6 @@
 import "./LandingPage.css"
 import React, {useState} from "react";
-import {GameStats} from "./types";
+import {DailyStats, GameStats} from "./types";
 import GameStatsTable from "./GameStatsTable";
 import HeaderLinks from "./HeaderLinks";
 import ModalPageOverlay from "./ModalPageOverlay";
@@ -13,6 +13,7 @@ interface LandingPageProps {
   mediumRoundAction: () => void
   longRoundAction: () => void
   gameStats: GameStats[]
+  dailyStats: DailyStats
 }
 
 function LandingPage(
@@ -21,7 +22,8 @@ function LandingPage(
       shortRoundAction,
       mediumRoundAction,
       longRoundAction,
-      gameStats
+      gameStats,
+      dailyStats
     }: LandingPageProps) {
 
   const [showHowToPlay, setShowHowToPlay] = useState(false);
@@ -44,12 +46,16 @@ function LandingPage(
 
   function getGameStartButtons() {
     if (process.env.REACT_APP_UNLIMITED_MODE === "true") {
-      return <StartButton startGame={unlimitedModeAction}/>
+      return <StartButton startGame={unlimitedModeAction} isDisabled={false}/>
     }
     return <GameModeButtons
         shortRoundAction={shortRoundAction}
         mediumRoundAction={mediumRoundAction}
-        longRoundAction={longRoundAction}/>
+        longRoundAction={longRoundAction}
+        dailyShortRoundCompleted={dailyStats.short.complete}
+        dailyMediumRoundCompleted={dailyStats.medium.complete}
+        dailyLongRoundCompleted={dailyStats.long.complete}
+    />
   }
 
   return (

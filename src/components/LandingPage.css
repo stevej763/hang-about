@@ -24,14 +24,6 @@
     color: #363434;
 }
 
-.Disabled {
-    background: #464657;
-}
-
-.Disabled:hover {
-    background: #464657;
-}
-
 @media only screen and (max-width: 600px) {
     .LandingPage {
         margin: 10px;
