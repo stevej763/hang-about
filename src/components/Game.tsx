@@ -17,8 +17,6 @@ function Game() {
 
   function getDailyGameLogData() :DailyStats {
     const today = new Date().setHours(0 , 0, 0, 0).toString();
-    const fakeDay = new Date("2022-12-16").setHours(0 , 0, 0, 0).toString();
-
 
     const defaultDailyStats: DailyStats = {
       date: today,
