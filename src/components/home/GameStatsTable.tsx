@@ -1,15 +1,16 @@
 import React from "react";
-import {GameStats} from "../types";
+import {GameHistory, GameStats} from "../types";
 import "./GameStatsTable.css"
 import FormattedTime from "../FormattedTime";
 
 interface GameStatsTableProps {
-  gameStats: GameStats[]
+  gameHistory: GameHistory[]
 }
 
-function GameStatsTable({gameStats}: GameStatsTableProps) {
+function GameStatsTable({gameHistory}: GameStatsTableProps) {
 
-  function createRow(game: GameStats, gameNumber: number) {
+  function createRow(day: GameHistory, dayNumber: number) {
+
 
     function calculateScore(game: GameStats) {
       const baseScore: number = parseInt(process.env.REACT_APP_BASE_SCORE || "100")
@@ -20,21 +21,23 @@ function GameStatsTable({gameStats}: GameStatsTableProps) {
 
       const totalPenaltyPoints = gameTimePenalty + guessCountPenalty;
 
-      return <td>{baseScore - totalPenaltyPoints}</td>
+      return baseScore - totalPenaltyPoints
     }
 
-    return <tr key={gameNumber}>
-      <td>{gameNumber}</td>
-      <td>{game.word}</td>
-      <td>{game.guessCount}</td>
-      <td><FormattedTime time={game.time} /></td>
-      {calculateScore(game)}
-    </tr>
-
+    return day.games.map(game => {
+      return (
+          <tr>
+            {day.games[0] === game ? <td rowSpan={3}>{new Date(parseInt(day.date)).toLocaleDateString()}</td> : null}
+            <td>{game.word}</td>
+            <td>{game.guessCount}</td>
+            <td><FormattedTime time={game.time} /></td>
+            <td>{calculateScore(game)}</td>
+          </tr>)
+    })
   }
 
   function getTable() {
-    if (gameStats.length === 0) {
+    if (gameHistory.length === 0) {
       return <p className={"NoGamesPlayed"}>Play a game to see your stats here</p>
     }
     return (
@@ -49,7 +52,7 @@ function GameStatsTable({gameStats}: GameStatsTableProps) {
           </tr>
           </thead>
           <tbody>
-          {gameStats.slice().reverse().map((game: GameStats, index: number) => createRow(game, gameStats.length - index))}
+          {gameHistory.slice().reverse().map((game: GameHistory, index: number) => createRow(game, gameHistory.length - index))}
           </tbody>
         </table>
     );

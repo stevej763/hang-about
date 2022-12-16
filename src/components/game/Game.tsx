@@ -1,41 +1,18 @@
 import "./Game.css"
 import React, {useEffect, useState} from "react";
-import {DailyStats, GameStats} from "../types";
+import {DayStats, GameHistory, GameStats} from "../types";
 import {createEmptyArrayForWord} from "../../utils/wordGeneratorUtil";
 import {getLongDailyWord, getMediumDailyWord, getRandomWord, getShortDailyWord} from "../../api/DailyWords";
 import GuessCounter from "./GuessCounter";
 import CurrentGameLetterInputs from "./CurrentGameLetterInputs";
 import LandingPage from "../home/LandingPage";
 import GameTimer from "./GameTimer";
+import {buildGameStats, updateGamesPlayedToday} from "./StatsMapper";
+import {getLocalGameHistoryData, getLocalGamesPlayedToday, updateLetterHistory} from "../../utils/localStorageUtils";
 
 function Game() {
-  function getLocalGameHistoryData() {
-    const statsDataString = localStorage.getItem("gameStats") || "[]";
-    const parsedStorageData: GameStats[] = JSON.parse(statsDataString) || [];
-    return parsedStorageData;
-  }
 
-  function getDailyGameLogData() :DailyStats {
-    const today = new Date().setHours(0 , 0, 0, 0).toString();
-
-    const defaultDailyStats: DailyStats = {
-      date: today,
-      short: {complete: false, gameStats: {guessCount: 0, word: "", time: 0, letterHistory:[]}},
-      medium: {complete: false, gameStats: {guessCount: 0, word: "", time: 0, letterHistory:[]}},
-      long: {complete: false, gameStats: {guessCount: 0, word: "", time: 0, letterHistory:[]}}
-    }
-
-    const dailyLogString: string = localStorage.getItem("dailyGameLog") || JSON.stringify(defaultDailyStats);
-    const parsedDailyData: DailyStats = JSON.parse(dailyLogString);
-
-    if (parsedDailyData.date !== today) {
-      return defaultDailyStats
-    }
-
-    return parsedDailyData;
-  }
-
-  const [dailyGameLog, setDailyGameLog] = useState(getDailyGameLogData())
+  const [gamesPlayedToday, setGamesPlayedToday] = useState(getLocalGamesPlayedToday())
   const [gameHistory, setGameHistory] = useState(getLocalGameHistoryData())
   const [inGame, setInGame] = useState(false)
   const [gameActive, setGameActive] = useState(false)
@@ -52,7 +29,6 @@ function Game() {
       }, 10);
       return () => clearInterval(interval);
     }
-
   }, [gameTime, gameActive]);
 
   function updateGuessCount() {
@@ -65,41 +41,63 @@ function Game() {
     setGameTime(0)
   }
 
-  function completeGame(letterHistory: string[], gameMode: string) {
-    const gameStats: GameStats = {
-      guessCount: guessCount,
-      word: wordToGuess,
-      time: gameTime,
-      letterHistory: letterHistory
+  function updateDailyGamesPlayed(gameStats: GameStats) {
+    const updatedGamesPlayedToday: DayStats = updateGamesPlayedToday(gameStats, gameMode, gamesPlayedToday);
+    localStorage.setItem("today", JSON.stringify(updatedGamesPlayedToday));
+    setGamesPlayedToday(updatedGamesPlayedToday)
+  }
+
+  function getDatedGameHistory() {
+    const currentGameHistoryString = localStorage.getItem("gameHistory");
+    if (currentGameHistoryString !== null) {
+      const currentGameHistory: GameHistory[] = JSON.parse(currentGameHistoryString);
+
+      return [...currentGameHistory];
+    } else {
+      return [];
     }
-    let currentDailyGameLog: DailyStats = dailyGameLog
+  }
 
-    switch (gameMode) {
-      case "short":
-        currentDailyGameLog.short.complete =true;
-        currentDailyGameLog.short.gameStats = gameStats
-        break;
-      case "medium":
-        currentDailyGameLog.medium.complete =true;
-        currentDailyGameLog.medium.gameStats = gameStats
+  function addGameToCurrentDayStats(datedGameStat: GameHistory, todayDateString: string, gameStats: GameStats) {
+    if (datedGameStat.date === todayDateString) datedGameStat.games.push(gameStats)
+    return
+  }
 
-        break;
-      case "long":
-        currentDailyGameLog.long.complete =true;
-        currentDailyGameLog.long.gameStats = gameStats
-
-        break;
+  function updateExistingGameHistory(currentGameHistory: GameHistory[], todayDateString: string, datedGameStats: GameHistory, gameStats: GameStats) {
+    let noGamesToday = true;
+    currentGameHistory.forEach(gameStats => {if (gameStats.date === todayDateString) noGamesToday = false})
+    if (noGamesToday) {
+      currentGameHistory.push(datedGameStats)
+    } else {
+      currentGameHistory.map(datedGameStat => addGameToCurrentDayStats(datedGameStat, todayDateString, gameStats));
     }
-    setDailyGameLog(currentDailyGameLog)
-    const dayLogString = JSON.stringify(currentDailyGameLog);
-    localStorage.setItem("dailyGameLog", dayLogString);
-    const updatedGameHistory = [...gameHistory];
-    updatedGameHistory.push(gameStats)
-    setGameHistory(updatedGameHistory);
-    const existingGameData: GameStats[] = getLocalGameHistoryData()
-    existingGameData.push(gameStats)
-    const value = JSON.stringify(existingGameData);
-    localStorage.setItem("gameStats", value);
+    localStorage.setItem("gameHistory", JSON.stringify(currentGameHistory));
+  }
+
+  function updateGameHistory(gameStats: GameStats) {
+    const todayDateString = new Date().setHours(0, 0, 0, 0).toString();
+    const currentGameHistory: GameHistory[] = getDatedGameHistory();
+
+    const datedGameStats: GameHistory = {date: todayDateString, games: [gameStats]}
+    const isFirstTimePlaying = currentGameHistory.length === 0;
+    if (isFirstTimePlaying) {
+      const gameHistoryArray: GameHistory[] = [datedGameStats];
+      localStorage.setItem("gameHistory", JSON.stringify(gameHistoryArray));
+    } else {
+      updateExistingGameHistory(currentGameHistory, todayDateString, datedGameStats, gameStats);
+    }
+
+    setGameHistory(currentGameHistory);
+  }
+
+  function completeGame(letterHistory: string[]) {
+
+    const gameStats = buildGameStats(letterHistory, guessCount, wordToGuess, gameTime);
+
+    updateDailyGamesPlayed(gameStats);
+    updateLetterHistory(gameStats.letterHistory)
+    updateGameHistory(gameStats);
+
     resetGuessCount();
     resetGameTimer()
     setInGame(false)
@@ -133,10 +131,12 @@ function Game() {
     const newWord = await getShortDailyWord();
     triggerGameFor(newWord, "short")
   }
+
   async function mediumRoundMode() {
     const newWord = await getMediumDailyWord();
     triggerGameFor(newWord, "medium")
   }
+
   async function longRoundMode() {
     const newWord = await getLongDailyWord();
     triggerGameFor(newWord, "long")
@@ -150,8 +150,8 @@ function Game() {
           shortRoundAction={shortRoundMode}
           mediumRoundAction={mediumRoundMode}
           longRoundAction={longRoundMode}
-          gameStats={gameHistory}
-          dailyStats={dailyGameLog}
+          gameHistory={gameHistory}
+          dayStats={gamesPlayedToday}
       />
     } else {
       return (

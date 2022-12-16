@@ -41,14 +41,31 @@ input:focus {
 }
 
 .Animate {
-    animation-name: example;
-    animation-duration: 0.3s;
+    animation-name: colorChange;
+    animation-duration: 0.7s;
     transition: transform 0.8s;
     transform-style: preserve-3d;
     transform: rotateY(360deg);
 }
 
-@keyframes example {
-    from {background-color: #bd4141;}
-    to {background-color: #eed708;}
+@keyframes colorChange {
+    0% {
+        background-color: #bd4141;
+    }
+
+    50% {
+        background-color: #eed708;
+    }
+    100% {
+        background-color: #78c708;
+    }
+}
+
+@keyframes colorChange {
+    from {
+        background-color: #bd4141;
+    }
+    to {
+        background-color: #eed708;
+    }
 }

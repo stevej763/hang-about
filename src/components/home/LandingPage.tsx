@@ -1,6 +1,6 @@
 import "./LandingPage.css"
 import React, {useState} from "react";
-import {DailyStats, GameStats} from "../types";
+import {DayStats, GameHistory, GameStats} from "../types";
 import GameStatsTable from "./GameStatsTable";
 import HeaderLinks from "./HeaderLinks";
 import ModalPageOverlay from "../ModalPageOverlay";
@@ -12,8 +12,8 @@ interface LandingPageProps {
   shortRoundAction: () => void
   mediumRoundAction: () => void
   longRoundAction: () => void
-  gameStats: GameStats[]
-  dailyStats: DailyStats
+  gameHistory: GameHistory[]
+  dayStats: DayStats
 }
 
 function LandingPage(
@@ -22,8 +22,8 @@ function LandingPage(
       shortRoundAction,
       mediumRoundAction,
       longRoundAction,
-      gameStats,
-      dailyStats
+      gameHistory,
+      dayStats
     }: LandingPageProps) {
 
   const [showHowToPlay, setShowHowToPlay] = useState(false);
@@ -52,9 +52,9 @@ function LandingPage(
         shortRoundAction={shortRoundAction}
         mediumRoundAction={mediumRoundAction}
         longRoundAction={longRoundAction}
-        dailyShortRoundCompleted={dailyStats.short.complete}
-        dailyMediumRoundCompleted={dailyStats.medium.complete}
-        dailyLongRoundCompleted={dailyStats.long.complete}
+        dailyShortRoundCompleted={dayStats.short.complete}
+        dailyMediumRoundCompleted={dayStats.medium.complete}
+        dailyLongRoundCompleted={dayStats.long.complete}
     />
   }
 
@@ -63,7 +63,7 @@ function LandingPage(
         <HeaderLinks showHowToPlay={showHowToPlay} toggleModal={handleHowToPlayModel}/>
         <ModalPageOverlay isVisible={showHowToPlay}/>
         {getGameStartButtons()}
-        <GameStatsTable gameStats={gameStats}/>
+        <GameStatsTable gameHistory={gameHistory}/>
         {displayWipInfo()}
       </div>
   )

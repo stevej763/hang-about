@@ -6,9 +6,15 @@ export interface GameStats {
   letterHistory: string[]
 }
 
-export interface DailyStats {
+export interface DayStats {
   date: string
   short: {complete: boolean, gameStats: GameStats}
   medium: {complete: boolean, gameStats: GameStats}
   long: {complete: boolean, gameStats: GameStats}
+}
+
+export interface GameHistory {
+  date: string;
+  games: GameStats[]
+
 }
