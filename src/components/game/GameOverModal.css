@@ -8,6 +8,22 @@
     margin: auto;
 }
 
+
+.SummaryModalTitle {
+    margin: 0;
+    font-size: 1.3rem;
+}
+
+.SummaryHeading {
+    font-size: 1.5rem;
+    margin-top:30px;
+}
+
+.WordOfTheDayAnswer {
+    font-size: 2rem;
+    margin: 10px;
+}
+
 .DataSummary {
     margin: auto;
     display: flex;

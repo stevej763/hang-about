@@ -4,6 +4,31 @@
     align-items: center;
 }
 
+.ShareButtons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin: 20px auto;
+    padding: 10px;
+}
+
+.ShareStatsButton {
+    width: 100px;
+    margin: auto 10px;
+    font-size: 1rem;
+    padding: 10px;
+    text-decoration: none;
+    outline: none;
+    background: #78c708;
+    border: solid #3e6704 3px;
+    border-radius: 8px;
+    font-family: source-code-pro, monospace;
+    text-align: center;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;;
+    color: black;
+}
+
 .WorkInProgress {
     padding-top: 50px;
     text-align: center;

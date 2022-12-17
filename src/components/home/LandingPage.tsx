@@ -1,5 +1,5 @@
 import "./LandingPage.css"
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {DayStats, GameHistory} from "../types";
 import GameStatsTable from "./GameStatsTable";
 import HeaderLinks from "./HeaderLinks";
@@ -7,6 +7,7 @@ import ModalPageOverlay from "../ModalPageOverlay";
 import GameModeButtons from "./GameModeButtons"
 import StartButton from "./StartButton";
 import DailyChallengeHeading from "./DailyChallengeHeading";
+import TweetButton from "./TweetButton";
 
 interface LandingPageProps {
   unlimitedModeAction: () => void;
@@ -28,6 +29,21 @@ function LandingPage(
     }: LandingPageProps) {
 
   const [showHowToPlay, setShowHowToPlay] = useState(false);
+  const [textCopied, setTextCopied] = useState(false);
+  const [test, setTest] = useState("test ext");
+
+  function resetSharedTextOnTimer() {
+    const interval = setInterval(() => {
+      setTextCopied(false)
+    }, 2000);
+    return () => clearInterval(interval);
+  }
+
+  useEffect(() => {
+    if (textCopied) {
+      resetSharedTextOnTimer();
+    }
+  }, [textCopied]);
 
   function handleHowToPlayModel() {
     setShowHowToPlay(!showHowToPlay)
@@ -49,6 +65,9 @@ function LandingPage(
     if (process.env.REACT_APP_UNLIMITED_MODE === "true") {
       return <StartButton startGame={unlimitedModeAction} isDisabled={false} text={"Start"}/>
     }
+    if (dailyChallengesAreComplete()) {
+      return
+    }
     return <GameModeButtons
         shortRoundAction={shortRoundAction}
         mediumRoundAction={mediumRoundAction}
@@ -63,11 +82,42 @@ function LandingPage(
     return dayStats.short.complete && dayStats.medium.complete && dayStats.long.complete;
   }
 
+  function copySharableStatsToClipboard() {
+    const userAgent = navigator.userAgent;
+    const testTextForClipboard = "Test copy to clipboard";
+    setTest("on desktop")
+    if (userAgent.match(/iP(ad|hone)/i)) {
+      setTest("on ios")
+      const clipboardItem = new ClipboardItem({
+        'text/plain': new Promise(async (resolve) => {
+          resolve(new Blob([testTextForClipboard]))
+        }),
+      })
+      navigator.clipboard.write([clipboardItem])
+          .then(() => setTextCopied(true))
+    } else {
+      navigator.clipboard.writeText(testTextForClipboard)
+          .then(() => setTextCopied(true))
+    }
+  }
+
+  function getShareButtons() {
+    if (dailyChallengesAreComplete()) {
+      const shareText = textCopied ? "Copied!" : "Share"
+      return <div className={"ShareButtons"}>
+        <button className={"ShareStatsButton"} onClick={() => copySharableStatsToClipboard()}>{shareText}</button>
+        <p>{test}</p>
+        <TweetButton/>
+      </div>
+    }
+  }
+
   return (
       <div className={"LandingPage"}>
         <ModalPageOverlay isVisible={showHowToPlay}/>
         <HeaderLinks showHowToPlay={showHowToPlay} toggleModal={handleHowToPlayModel}/>
         <DailyChallengeHeading allComplete={dailyChallengesAreComplete()}/>
+        {getShareButtons()}
         {getGameStartButtons()}
         <GameStatsTable gameHistory={gameHistory}/>
         {displayWipInfo()}

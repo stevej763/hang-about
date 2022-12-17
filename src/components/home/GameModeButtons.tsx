@@ -14,9 +14,9 @@ interface GameModeButtonsProps {
 function GameModeButtons({shortRoundAction, mediumRoundAction, longRoundAction,
                            dailyShortRoundCompleted, dailyMediumRoundCompleted, dailyLongRoundCompleted}: GameModeButtonsProps) {
   return <div className={"GameModeButtons"}>
-    <StartButton startGame={shortRoundAction} isDisabled={dailyShortRoundCompleted} text={"Short word"}/>
-    <StartButton startGame={mediumRoundAction} isDisabled={dailyMediumRoundCompleted} text={"Medium word"}/>
-    <StartButton startGame={longRoundAction} isDisabled={dailyLongRoundCompleted} text={"Long word"}/>
+    <StartButton startGame={shortRoundAction} isDisabled={dailyShortRoundCompleted} text={"Short"}/>
+    <StartButton startGame={mediumRoundAction} isDisabled={dailyMediumRoundCompleted} text={"Medium"}/>
+    <StartButton startGame={longRoundAction} isDisabled={dailyLongRoundCompleted} text={"Long"}/>
   </div>
 }
 

@@ -1,0 +1,27 @@
+.TwitterShareButton {
+    display: block;
+    margin: auto 10px;
+    width: 100px;
+    padding: 10px;
+    text-decoration: none;
+    outline: none;
+    background: #1d9bf0;
+    border: solid #146ca1 3px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: source-code-pro, monospace;
+    text-align: center;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;;
+    color: black;
+
+}
+
+.TwitterShareButton:hover {
+    border: solid #808080 3px;
+}
+
+.TwitterShareButton:focus {
+    background: #146ca1;
+
+}

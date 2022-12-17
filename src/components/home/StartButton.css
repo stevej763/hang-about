@@ -6,7 +6,6 @@
     background: #78de86;
     border: solid #59985e 3px;
     border-radius: 8px;
-    font-size: 15px;
     font-family: source-code-pro, monospace;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;;
@@ -45,10 +44,9 @@
 
 @media only screen and (max-width: 600px) {
     .StartButton {
-        font-size: 0.4rem;
         outline: none;
-        margin: 10px 5px;
-        width: 100px;
+        margin: 10px 4px;
+        width: 110px;
     }
 
     .StartText {
@@ -56,7 +54,7 @@
         position: relative;
         text-align: center;
         margin: 0;
-        font-size: 0.5rem;
+        font-size: 1rem;
     }
 }
 

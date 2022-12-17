@@ -37,7 +37,7 @@ function GameStatsTable({gameHistory}: GameStatsTableProps) {
 
     function generateRowForRound(game: GameStats, addDate: boolean) {
       const dateRow = addDate ? <td rowSpan={3}>{new Date(parseInt(day.date)).toLocaleDateString()}</td>: null;
-      return <tr>
+      return <tr key={Math.random()}>
         {dateRow}
         <td>{game.word}</td>
         <td>{game.guessCount}</td>

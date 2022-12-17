@@ -12,12 +12,21 @@ interface GameEndModalProps {
 
 function GameEndModal({isVisible, completeGame, gameStats, gameMode}: GameEndModalProps) {
 
+  function formattedGameModeText(gameMode: string) {
+    switch (gameMode) {
+      case "short": return "Short"
+      case "medium": return "Medium"
+      case "Long": return "Long"
+    }
+  }
+
   function getModal() {
     if (isVisible) {
       return <section className={"Modal"}>
         <div className={"EndGameStats"}>
-          <h3>{gameMode} word round summary:</h3>
-          <h1>{gameStats.word}</h1>
+          <h3 className={"SummaryModalTitle"}>Game summary</h3>
+          <h2 className={"SummaryHeading"}>{formattedGameModeText(gameMode)} word of the day:</h2>
+          <h1 className={"WordOfTheDayAnswer"}>{gameStats.word}</h1>
           <div className={"DataSummary"}>
             <div className={"GuessCount"}>
               <span>Guesses:</span>
