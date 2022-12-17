@@ -9,8 +9,7 @@ interface GameStatsTableProps {
 
 function GameStatsTable({gameHistory}: GameStatsTableProps) {
 
-  function createRow(day: GameHistory, dayNumber: number) {
-
+  function createRow(day: GameHistory) {
 
     function calculateScore(game: GameStats) {
       const baseScore: number = parseInt(process.env.REACT_APP_BASE_SCORE || "100")
@@ -24,21 +23,39 @@ function GameStatsTable({gameHistory}: GameStatsTableProps) {
       return baseScore - totalPenaltyPoints
     }
 
-    return day.games.map(game => {
-      return (
-          <tr>
-            {day.games[0] === game ? <td rowSpan={3}>{new Date(parseInt(day.date)).toLocaleDateString()}</td> : null}
-            <td>{game.word}</td>
-            <td>{game.guessCount}</td>
-            <td><FormattedTime time={game.time} /></td>
-            <td>{calculateScore(game)}</td>
-          </tr>)
-    })
+    const gameOne = day.games[0];
+    const gameTwo = day.games[1];
+    const gameThree = day.games[2];
+
+    const emptyRow =
+        <tr>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+        </tr>
+
+    function generateRowForRound(game: GameStats, addDate: boolean) {
+      const dateRow = addDate ? <td rowSpan={3}>{new Date(parseInt(day.date)).toLocaleDateString()}</td>: null;
+      return <tr>
+        {dateRow}
+        <td>{game.word}</td>
+        <td>{game.guessCount}</td>
+        <td><FormattedTime time={game.time}/></td>
+        <td>{calculateScore(game)}</td>
+      </tr>;
+    }
+
+    const gameOneRow = generateRowForRound(gameOne, true);
+    const gameTwoRow = gameTwo != null ? generateRowForRound(gameTwo, false) : emptyRow
+    const gameThreeRow = gameThree != null ? generateRowForRound(gameThree, false) : emptyRow
+
+    return [gameOneRow, gameTwoRow, gameThreeRow];
   }
 
   function getTable() {
     if (gameHistory.length === 0) {
-      return <p className={"NoGamesPlayed"}>Play a game to see your stats here</p>
+      return <p className={"NoGamesPlayed"}>Play a game to see your latest stats here</p>
     }
     return (
         <table className={"StatsTable"}>
@@ -52,12 +69,11 @@ function GameStatsTable({gameHistory}: GameStatsTableProps) {
           </tr>
           </thead>
           <tbody>
-          {gameHistory.slice().reverse().map((game: GameHistory, index: number) => createRow(game, gameHistory.length - index))}
+          {gameHistory.slice().reverse().map((game: GameHistory) => createRow(game))}
           </tbody>
         </table>
     );
   }
-
   return getTable()
 
 }

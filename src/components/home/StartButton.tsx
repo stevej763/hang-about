@@ -3,15 +3,16 @@ import './StartButton.css'
 interface StartButtonProps {
   startGame: () => void
   isDisabled: boolean
+  text: string
 }
 
-function StartButton({startGame, isDisabled} : StartButtonProps) {
+function StartButton({startGame, isDisabled, text} : StartButtonProps) {
 
   function buttonText() {
     if (isDisabled) {
       return "Complete"
     }
-    return <span>Start <span className={"ButtonArrow"}>&#62;</span></span>
+    return <span>{text} <span className={"ButtonArrow"}>&#62;</span></span>
   }
 
   return <button

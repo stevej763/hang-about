@@ -9,6 +9,7 @@ import LandingPage from "../home/LandingPage";
 import GameTimer from "./GameTimer";
 import {buildGameStats, updateGamesPlayedToday} from "./StatsMapper";
 import {getLocalGameHistoryData, getLocalGamesPlayedToday, updateLetterHistory} from "../../utils/localStorageUtils";
+import {currentDateMillis} from "../../utils/dateUtil";
 
 function Game() {
 
@@ -51,7 +52,6 @@ function Game() {
     const currentGameHistoryString = localStorage.getItem("gameHistory");
     if (currentGameHistoryString !== null) {
       const currentGameHistory: GameHistory[] = JSON.parse(currentGameHistoryString);
-
       return [...currentGameHistory];
     } else {
       return [];
@@ -63,19 +63,26 @@ function Game() {
     return
   }
 
+  function hasPlayedToday(gameHistoryFromStorage: GameHistory[], todayDateString: string) {
+    let hasGameInHistory = false;
+    gameHistoryFromStorage.forEach(dailyGames => {
+      if (dailyGames.date === todayDateString) hasGameInHistory = true
+    })
+    return hasGameInHistory;
+  }
+
   function updateExistingGameHistory(currentGameHistory: GameHistory[], todayDateString: string, datedGameStats: GameHistory, gameStats: GameStats) {
-    let noGamesToday = true;
-    currentGameHistory.forEach(gameStats => {if (gameStats.date === todayDateString) noGamesToday = false})
-    if (noGamesToday) {
-      currentGameHistory.push(datedGameStats)
-    } else {
+    let playedToday = hasPlayedToday(currentGameHistory, todayDateString);
+    if (playedToday) {
       currentGameHistory.map(datedGameStat => addGameToCurrentDayStats(datedGameStat, todayDateString, gameStats));
+    } else {
+      currentGameHistory.push(datedGameStats)
     }
     localStorage.setItem("gameHistory", JSON.stringify(currentGameHistory));
   }
 
   function updateGameHistory(gameStats: GameStats) {
-    const todayDateString = new Date().setHours(0, 0, 0, 0).toString();
+    const todayDateString = currentDateMillis;
     const currentGameHistory: GameHistory[] = getDatedGameHistory();
 
     const datedGameStats: GameHistory = {date: todayDateString, games: [gameStats]}
@@ -83,11 +90,11 @@ function Game() {
     if (isFirstTimePlaying) {
       const gameHistoryArray: GameHistory[] = [datedGameStats];
       localStorage.setItem("gameHistory", JSON.stringify(gameHistoryArray));
+      setGameHistory(gameHistoryArray);
     } else {
       updateExistingGameHistory(currentGameHistory, todayDateString, datedGameStats, gameStats);
+      setGameHistory(currentGameHistory);
     }
-
-    setGameHistory(currentGameHistory);
   }
 
   function completeGame(letterHistory: string[]) {

@@ -1,11 +1,12 @@
 import "./LandingPage.css"
 import React, {useState} from "react";
-import {DayStats, GameHistory, GameStats} from "../types";
+import {DayStats, GameHistory} from "../types";
 import GameStatsTable from "./GameStatsTable";
 import HeaderLinks from "./HeaderLinks";
 import ModalPageOverlay from "../ModalPageOverlay";
 import GameModeButtons from "./GameModeButtons"
 import StartButton from "./StartButton";
+import DailyChallengeHeading from "./DailyChallengeHeading";
 
 interface LandingPageProps {
   unlimitedModeAction: () => void;
@@ -46,7 +47,7 @@ function LandingPage(
 
   function getGameStartButtons() {
     if (process.env.REACT_APP_UNLIMITED_MODE === "true") {
-      return <StartButton startGame={unlimitedModeAction} isDisabled={false}/>
+      return <StartButton startGame={unlimitedModeAction} isDisabled={false} text={"Start"}/>
     }
     return <GameModeButtons
         shortRoundAction={shortRoundAction}
@@ -58,10 +59,15 @@ function LandingPage(
     />
   }
 
+  function dailyChallengesAreComplete() {
+    return dayStats.short.complete && dayStats.medium.complete && dayStats.long.complete;
+  }
+
   return (
       <div className={"LandingPage"}>
-        <HeaderLinks showHowToPlay={showHowToPlay} toggleModal={handleHowToPlayModel}/>
         <ModalPageOverlay isVisible={showHowToPlay}/>
+        <HeaderLinks showHowToPlay={showHowToPlay} toggleModal={handleHowToPlayModel}/>
+        <DailyChallengeHeading allComplete={dailyChallengesAreComplete()}/>
         {getGameStartButtons()}
         <GameStatsTable gameHistory={gameHistory}/>
         {displayWipInfo()}

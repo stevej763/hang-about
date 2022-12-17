@@ -7,15 +7,16 @@ interface GameEndModalProps {
   isVisible: boolean;
   gameStats: GameStats;
   completeGame: () => void;
+  gameMode: string
 }
 
-function GameEndModal({isVisible, completeGame, gameStats}: GameEndModalProps) {
+function GameEndModal({isVisible, completeGame, gameStats, gameMode}: GameEndModalProps) {
 
   function getModal() {
     if (isVisible) {
       return <section className={"Modal"}>
         <div className={"EndGameStats"}>
-          <h3>GAME SUMMARY FOR TODAY'S WORD:</h3>
+          <h3>{gameMode} word round summary:</h3>
           <h1>{gameStats.word}</h1>
           <div className={"DataSummary"}>
             <div className={"GuessCount"}>

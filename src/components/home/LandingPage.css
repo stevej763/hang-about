@@ -13,17 +13,6 @@
     color: #78c708;
 }
 
-.StartText {
-    color: #282c34;
-    position: relative;
-    text-align: center;
-    margin: 0;
-}
-
-.StartText {
-    color: #363434;
-}
-
 @media only screen and (max-width: 600px) {
     .LandingPage {
         margin: 10px;

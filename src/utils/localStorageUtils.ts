@@ -1,4 +1,5 @@
-import {DayStats, GameHistory, GameStats} from "../components/types";
+import {DayStats, GameHistory} from "../components/types";
+import {currentDateMillis} from "./dateUtil";
 
 export function getLocalGameHistoryData() {
   const statsDataString = localStorage.getItem("gameHistory") || "[]";
@@ -7,7 +8,7 @@ export function getLocalGameHistoryData() {
 }
 
 export function getLocalGamesPlayedToday(): DayStats {
-  const todayDateString = new Date().setHours(0, 0, 0, 0).toString();
+  const todayDateString = currentDateMillis
   const emptyDayStats = createEmptyDayStats(todayDateString);
 
   const dayStats = parseStatsForCurrentDay(todayDateString, emptyDayStats);

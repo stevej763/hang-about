@@ -23,6 +23,14 @@
     box-shadow: 0 0 4px #7e7b7b;
 }
 
+.StartText {
+    color: #282c34;
+    position: relative;
+    text-align: center;
+    margin: 0;
+    font-size: 1.2rem;
+}
+
 .Disabled {
     background: #464657;
 }
@@ -32,7 +40,6 @@
     background: #464657;
     box-shadow: none;
     cursor: auto;
-
 }
 
 
@@ -42,7 +49,14 @@
         outline: none;
         margin: 10px 5px;
         width: 100px;
+    }
 
+    .StartText {
+        color: #282c34;
+        position: relative;
+        text-align: center;
+        margin: 0;
+        font-size: 0.5rem;
     }
 }
 

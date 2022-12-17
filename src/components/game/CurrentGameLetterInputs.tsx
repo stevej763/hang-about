@@ -173,6 +173,7 @@ export default function CurrentGameLetterInputs(
   return <div className={"CurrentGameLetters"}>
     <GameEndModal isVisible={gameOver}
                   completeGame={() => complete(letterHistory, gameMode)}
+                  gameMode={gameMode}
                   gameStats={{
                     letterHistory: letterHistory,
                     guessCount: currentGuessCount,
