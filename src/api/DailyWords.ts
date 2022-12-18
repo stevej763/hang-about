@@ -20,7 +20,7 @@ export async function getShortDailyWord(): Promise<string> {
     const shortLengthWord = "/?mode=" + process.env.REACT_APP_MODE_ONE;
     return await getWordFromApi(shortLengthWord);
   }
-  return "A";
+  return "OPEN";
 }
 
 export async function getMediumDailyWord(): Promise<string> {
@@ -28,7 +28,7 @@ export async function getMediumDailyWord(): Promise<string> {
     const mediumLengthWord = "/?mode=" + process.env.REACT_APP_MODE_TWO;
     return await getWordFromApi(mediumLengthWord)
   }
-  return "B";
+  return "AFRAID";
 }
 
 export async function getLongDailyWord(): Promise<string> {
@@ -36,7 +36,7 @@ export async function getLongDailyWord(): Promise<string> {
     const longLengthWord = "/?mode=" + process.env.REACT_APP_MODE_THREE;
     return await getWordFromApi(longLengthWord);
   }
-  return "C";
+  return "BALANCED";
 }
 
 async function getWordFromApi(uri: string) {

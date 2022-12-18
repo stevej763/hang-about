@@ -2,10 +2,14 @@ import React from "react";
 import './TweetButton.css'
 import {currentDateLongString} from "../../utils/dateUtil";
 
-export default function TweetButton() {
+interface TweetButtonProps {
+  shareString: string
+}
+
+export default function TweetButton({shareString} : TweetButtonProps) {
   const date = currentDateLongString()
 
-  const completedTextUrlEncoded = `I completed the Hangabout daily challenge for ${date}!`
+  const completedTextUrlEncoded = `I completed the Hangabout daily challenge for ${date}!%0A${shareString}%0A`
   const hangaboutLinkUrlEncoded = "https://hangabout.io"
   return <a
       className={"TwitterShareButton"}

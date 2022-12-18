@@ -1,6 +1,6 @@
 import "./LandingPage.css"
 import React, {useEffect, useState} from "react";
-import {DayStats, GameHistory} from "../types";
+import {DayStats, GameHistory, GameStats} from "../types";
 import GameStatsTable from "./GameStatsTable";
 import HeaderLinks from "./HeaderLinks";
 import ModalPageOverlay from "../ModalPageOverlay";
@@ -30,12 +30,11 @@ function LandingPage(
 
   const [showHowToPlay, setShowHowToPlay] = useState(false);
   const [textCopied, setTextCopied] = useState(false);
-  const [test, setTest] = useState("test ext");
 
   function resetSharedTextOnTimer() {
     const interval = setInterval(() => {
       setTextCopied(false)
-    }, 2000);
+    }, 3000);
     return () => clearInterval(interval);
   }
 
@@ -82,12 +81,43 @@ function LandingPage(
     return dayStats.short.complete && dayStats.medium.complete && dayStats.long.complete;
   }
 
+
+  function spacing(length: string) {
+    switch (length) {
+      case "Short" : return "%20%20%20%20%20%20";
+      case "Medium" : return "%20";
+      case "Long" : return "%20%20%20%20%20%20%20";
+    }
+  }
+
+  function createUrlEncodedWordRow(stats: GameStats, length: string) {
+    const seconds = ("0" + Math.floor(stats.time / 1000) % 60).slice(-2).toString() + "." + ("0" + (stats.time / 10) % 1000).slice(-2).toString();
+    return `${length + spacing(length)}%20%7C%20${seconds}%20Seconds%2C%20${stats.guessCount}%20guesses`;
+  }
+
+  function createWordRowForClipboard(stats: GameStats, wordLength: string) {
+    const seconds = ("0" + Math.floor(stats.time / 1000) % 60).slice(-2).toString() + "." + ("0" + (stats.time / 10) % 1000).slice(-2).toString();
+    return `${wordLength} | ${stats.guessCount} | ${seconds}`
+        ;
+  }
+
+  function createSharableString(urlEncode: boolean): string {
+    const short = dayStats.short.gameStats;
+    const medium = dayStats.medium.gameStats;
+    const long = dayStats.long.gameStats;
+    if (urlEncode) {
+      return (
+          `${createUrlEncodedWordRow(short, "Short")}%0A` +
+          `${createUrlEncodedWordRow(medium, "Medium")}%0A` +
+           `${createUrlEncodedWordRow(long, "Long")}`);
+    }
+    return `${createWordRowForClipboard(short, "Short")}\n${createWordRowForClipboard(medium, "Medium")}\n${createWordRowForClipboard(long, "Long")}`;
+  }
+
   function copySharableStatsToClipboard() {
     const userAgent = navigator.userAgent;
-    const testTextForClipboard = "Test copy to clipboard";
-    setTest("on desktop")
+    const testTextForClipboard: string = createSharableString(false)
     if (userAgent.match(/iP(ad|hone)/i)) {
-      setTest("on ios")
       const clipboardItem = new ClipboardItem({
         'text/plain': new Promise(async (resolve) => {
           resolve(new Blob([testTextForClipboard]))
@@ -106,8 +136,7 @@ function LandingPage(
       const shareText = textCopied ? "Copied!" : "Share"
       return <div className={"ShareButtons"}>
         <button className={"ShareStatsButton"} onClick={() => copySharableStatsToClipboard()}>{shareText}</button>
-        <p>{test}</p>
-        <TweetButton/>
+        <TweetButton shareString={createSharableString(true)}/>
       </div>
     }
   }
