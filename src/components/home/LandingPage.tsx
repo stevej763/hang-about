@@ -51,11 +51,9 @@ function LandingPage(
   function displayWipInfo() {
     if (process.env.REACT_APP_WIP) {
       return <div className={"WorkInProgress"}>
-        <p>Hi there, welcome to Hang About, a fun little project I have been working on in my free time.</p>
-        <p>If you are reading this it is because the game is still a work in progress and I am actively fixing bugs and
-          adding functionality. The site may also randomly break as I test changes so please forgive any issues.</p>
-        <p>Feel free to drop me an email <a href={"mailto:steve@hangabout.io"}>steve@hangabout.io</a> if you find a bug
-          or want to request a feature.</p>
+        <p>Welcome to Hangabout, a Wordle-esque project I have been working on in my free time to develop my front-end programming knowledge.</p>
+        <p>This game is still a work in progress. The site may break occasionally as I test changes.</p>
+        <p>You can find the code <a target={"_blank"} rel="noreferrer" href={"https://github.com/stevej763/hang-about"}>here</a> if you are interested. If you have any feedback you can send me an email <a href={"mailto:steve@hangabout.io"}>steve@hangabout.io</a></p>
       </div>
     }
   }
